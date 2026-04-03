@@ -1,0 +1,20 @@
+{
+  "name": "remotion-video",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "npx remotion studio src/index.ts",
+    "build": "npx remotion render src/index.ts MainVideo out/final.mp4",
+    "render": "npx remotion render src/index.ts MainVideo out/final.mp4"
+  },
+  "dependencies": {
+    "@remotion/bundler": "^4.0.443",
+    "@remotion/cli": "^4.0.443",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "remotion": "^4.0.443",
+    "typescript": "^6.0.2"
+  }
+}
