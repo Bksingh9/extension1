@@ -8,7 +8,9 @@ import { Short01 } from './scenes/Short01';
 import { ChannelBanner } from './scenes/ChannelBanner';
 import { ProfilePicture } from './scenes/ProfilePicture';
 import { CartoonVideo } from './cartoon/CartoonVideo';
+import { DocVideo } from './cartoon/DocVideo';
 import { CARTOON_TOTAL } from './cartoon/theme';
+import { DOC_TOTAL } from './cartoon/docTimings';
 import { TOTAL_FRAMES } from './utils/timings';
 
 export const RemotionRoot: React.FC = () => {
@@ -69,6 +71,16 @@ export const RemotionRoot: React.FC = () => {
         id="CartoonGeoPolitics"
         component={CartoonVideo}
         durationInFrames={CARTOON_TOTAL}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+
+      {/* Documentary: Geo-Politics Deep Dive (7 chapters, real data) */}
+      <Composition
+        id="GeoPoliticsDoc"
+        component={DocVideo}
+        durationInFrames={DOC_TOTAL}
         fps={30}
         width={1920}
         height={1080}
