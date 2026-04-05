@@ -7,6 +7,8 @@ import { OutroScene } from './scenes/OutroScene';
 import { Short01 } from './scenes/Short01';
 import { ChannelBanner } from './scenes/ChannelBanner';
 import { ProfilePicture } from './scenes/ProfilePicture';
+import { CartoonVideo } from './cartoon/CartoonVideo';
+import { CARTOON_TOTAL } from './cartoon/theme';
 import { TOTAL_FRAMES } from './utils/timings';
 
 export const RemotionRoot: React.FC = () => {
@@ -60,6 +62,16 @@ export const RemotionRoot: React.FC = () => {
         fps={30}
         width={1080}
         height={1920}
+      />
+
+      {/* Cartoon: Geo-Politics & Conspiracy Theory */}
+      <Composition
+        id="CartoonGeoPolitics"
+        component={CartoonVideo}
+        durationInFrames={CARTOON_TOTAL}
+        fps={30}
+        width={1920}
+        height={1080}
       />
 
       {/* Channel art: banner and profile picture */}
