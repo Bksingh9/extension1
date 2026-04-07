@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Render Lab — AI-Powered Video Studio</title>
+<meta name="description" content="Turn ideas into rendered videos with AI. Watch our geo-politics documentaries, motion graphics, and AI-generated content.">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0a0f;--card:#12121a;--primary:#3b82f6;--secondary:#6366f1;--success:#22c55e;--gold:#f1c40f;--danger:#e74c3c;--text:#f1f5f9;--text2:#94a3b8;--text3:#64748b;--border:#1e293b;--radius:16px}
+body{background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,sans-serif;line-height:1.6;min-height:100vh}
+a{color:var(--primary);text-decoration:none}a:hover{text-decoration:underline}
+
+/* Header */
+.header{padding:24px 0;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(10,10,15,0.92);backdrop-filter:blur(12px);z-index:100}
+.header-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:12px}
+.logo-circle{width:40px;height:40px;border-radius:20px;background:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;color:#fff;box-shadow:0 0 20px rgba(59,130,246,0.3)}
+.logo-text{font-size:20px;font-weight:800;letter-spacing:-0.02em}
+.nav{display:flex;gap:24px;align-items:center}
+.nav a{color:var(--text2);font-size:14px;font-weight:500;transition:color 0.2s}
+.nav a:hover{color:var(--text);text-decoration:none}
+.cta-btn{background:var(--primary);color:#fff!important;padding:8px 20px;border-radius:8px;font-weight:600;font-size:14px;transition:all 0.2s}
+.cta-btn:hover{background:#2563eb;text-decoration:none}
+
+/* Hero */
+.hero{max-width:1200px;margin:0 auto;padding:80px 24px 60px;text-align:center}
+.hero-badge{display:inline-block;padding:6px 16px;background:rgba(59,130,246,0.12);border:1px solid rgba(59,130,246,0.25);border-radius:20px;font-size:13px;color:var(--primary);font-weight:600;margin-bottom:20px;letter-spacing:0.03em}
+.hero h1{font-size:56px;font-weight:800;letter-spacing:-0.03em;line-height:1.1;margin-bottom:16px}
+.hero h1 span{background:linear-gradient(135deg,var(--primary),var(--secondary));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{font-size:20px;color:var(--text2);max-width:600px;margin:0 auto 32px}
+.hero-stats{display:flex;justify-content:center;gap:48px;margin-top:40px}
+.stat{text-align:center}
+.stat-value{font-size:32px;font-weight:800;color:var(--primary);letter-spacing:-0.02em}
+.stat-label{font-size:13px;color:var(--text3);margin-top:4px}
+
+/* Video Grid */
+.section{max-width:1200px;margin:0 auto;padding:60px 24px}
+.section-title{font-size:32px;font-weight:800;letter-spacing:-0.02em;margin-bottom:8px}
+.section-sub{font-size:16px;color:var(--text2);margin-bottom:32px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:24px}
+
+/* Video Card */
+.video-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:all 0.3s}
+.video-card:hover{border-color:var(--primary);box-shadow:0 0 30px rgba(59,130,246,0.1);transform:translateY(-2px)}
+.video-card video{width:100%;aspect-ratio:16/9;background:#000;display:block}
+.video-card.vertical video{aspect-ratio:9/16;max-height:400px;object-fit:contain}
+.video-card .info{padding:20px}
+.video-card .badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:8px}
+.badge-featured{background:rgba(241,196,15,0.15);color:var(--gold);border:1px solid rgba(241,196,15,0.3)}
+.badge-new{background:rgba(34,197,94,0.15);color:var(--success);border:1px solid rgba(34,197,94,0.3)}
+.badge-short{background:rgba(139,92,246,0.15);color:#a78bfa;border:1px solid rgba(139,92,246,0.3)}
+.video-card h3{font-size:18px;font-weight:700;margin-bottom:6px;letter-spacing:-0.01em}
+.video-card .desc{font-size:14px;color:var(--text2);line-height:1.5}
+.video-card .meta{display:flex;gap:16px;margin-top:12px;font-size:12px;color:var(--text3)}
+
+/* Featured */
+.featured{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:40px}
+.featured video{width:100%;aspect-ratio:16/9;background:#000;display:block}
+.featured .info{padding:32px}
+.featured h3{font-size:28px;font-weight:800;margin-bottom:10px;letter-spacing:-0.02em}
+.featured .desc{font-size:16px;color:var(--text2);max-width:700px;line-height:1.6}
+.featured .chapters{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.chapter-tag{padding:5px 14px;background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.2);border-radius:8px;font-size:12px;color:var(--primary);font-weight:600}
+
+/* Pricing */
+.pricing{max-width:1200px;margin:0 auto;padding:60px 24px}
+.pricing-title{font-size:32px;font-weight:800;text-align:center;margin-bottom:8px;letter-spacing:-0.02em}
+.pricing-sub{text-align:center;color:var(--text2);margin-bottom:40px;font-size:16px}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:960px;margin:0 auto}
+.price-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:32px;text-align:center;position:relative;transition:all 0.3s}
+.price-card:hover{border-color:var(--primary);transform:translateY(-2px)}
+.price-card.popular{border-color:var(--primary);box-shadow:0 0 40px rgba(59,130,246,0.15)}
+.price-card.popular::before{content:'MOST POPULAR';position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--primary);color:#fff;padding:4px 16px;border-radius:12px;font-size:11px;font-weight:700;letter-spacing:0.06em}
+.price-name{font-size:18px;font-weight:700;margin-bottom:8px}
+.price-amount{font-size:42px;font-weight:800;letter-spacing:-0.03em;margin-bottom:4px}
+.price-amount span{font-size:16px;color:var(--text3);font-weight:400}
+.price-period{font-size:13px;color:var(--text3);margin-bottom:24px}
+.price-features{list-style:none;text-align:left;margin-bottom:28px}
+.price-features li{font-size:14px;color:var(--text2);padding:6px 0;display:flex;align-items:center;gap:8px}
+.price-features li::before{content:'✓';color:var(--success);font-weight:700;font-size:14px}
+.price-btn{display:block;width:100%;padding:12px;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;transition:all 0.2s}
+.price-btn-primary{background:var(--primary);color:#fff}.price-btn-primary:hover{background:#2563eb}
+.price-btn-outline{background:transparent;border:2px solid var(--border);color:var(--text)}.price-btn-outline:hover{border-color:var(--primary)}
+
+/* Monetization Banner */
+.money-banner{max-width:1200px;margin:0 auto;padding:0 24px}
+.money-inner{background:linear-gradient(135deg,rgba(59,130,246,0.12),rgba(99,102,241,0.12));border:1px solid rgba(59,130,246,0.2);border-radius:var(--radius);padding:40px;display:flex;align-items:center;gap:40px}
+.money-inner h3{font-size:24px;font-weight:800;margin-bottom:8px}
+.money-inner p{color:var(--text2);font-size:15px;line-height:1.6}
+.money-inner .money-stats{display:flex;gap:32px;margin-top:16px}
+
+/* Channel Art */
+.channel-art{max-width:1200px;margin:0 auto;padding:60px 24px}
+.art-grid{display:grid;grid-template-columns:2fr 1fr;gap:24px}
+.art-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.art-card img{width:100%;display:block}
+.art-card .info{padding:16px}
+.art-card h4{font-size:15px;font-weight:700;margin-bottom:4px}
+.art-card .desc{font-size:13px;color:var(--text3)}
+
+/* Footer */
+.footer{max-width:1200px;margin:0 auto;padding:40px 24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;margin-top:60px}
+.footer-left{font-size:14px;color:var(--text3)}
+.footer-right{display:flex;gap:20px}
+.footer-right a{color:var(--text3);font-size:13px}
+
+/* Responsive */
+@media(max-width:768px){
+  .hero h1{font-size:36px}
+  .grid{grid-template-columns:1fr}
+  .pricing-grid{grid-template-columns:1fr}
+  .art-grid{grid-template-columns:1fr}
+  .money-inner{flex-direction:column}
+  .hero-stats{gap:24px}
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-circle">AR</div>
+      <div class="logo-text">AI Render Lab</div>
+    </div>
+    <nav class="nav">
+      <a href="#videos">Videos</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#assets">Assets</a>
+      <a href="#pricing" class="cta-btn">Get Access</a>
+    </nav>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-badge">AI-Powered Video Studio</div>
+  <h1>Turn Ideas Into<br><span>Rendered Videos</span></h1>
+  <p>Geo-politics documentaries, motion graphics, and explainer videos — all created with AI and code. Watch free or subscribe for full access.</p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-value">7</div><div class="stat-label">Chapters</div></div>
+    <div class="stat"><div class="stat-value">10+</div><div class="stat-label">Videos</div></div>
+    <div class="stat"><div class="stat-value">100%</div><div class="stat-label">AI-Generated</div></div>
+    <div class="stat"><div class="stat-value">$0</div><div class="stat-label">Free Tier</div></div>
+  </div>
+</section>
+
+<!-- Featured Video -->
+<section class="section" id="videos">
+  <div class="featured">
+    <video controls preload="metadata" poster="">
+      <source src="/geopolitics-documentary.mp4" type="video/mp4">
+    </video>
+    <div class="info">
+      <span class="badge badge-featured">FEATURED</span>
+      <h3>Who Really Runs The World? — Geo-Politics Documentary</h3>
+      <div class="desc">A 7-chapter deep dive into the hidden forces shaping our world. From the petrodollar system to the military-industrial complex, every fact is real, every number verified. Created entirely with AI + Remotion.</div>
+      <div class="chapters">
+        <span class="chapter-tag">Ch1: Petrodollar</span>
+        <span class="chapter-tag">Ch2: Chip War</span>
+        <span class="chapter-tag">Ch3: Energy Chess</span>
+        <span class="chapter-tag">Ch4: BRICS Rising</span>
+        <span class="chapter-tag">Ch5: Middle East</span>
+        <span class="chapter-tag">Ch6: Surveillance</span>
+        <span class="chapter-tag">Ch7: War Machine</span>
+      </div>
+      <div class="meta">
+        <span>7 chapters</span>
+        <span>Real-world data</span>
+        <span>22 MB</span>
+        <span>1920×1080</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">All Videos</div>
+  <div class="section-sub">Watch free previews. Subscribe for full access and downloads.</div>
+  <div class="grid">
+
+    <div class="video-card">
+      <video controls preload="metadata"><source src="/cartoon-geopolitics.mp4" type="video/mp4"></video>
+      <div class="info">
+        <span class="badge badge-new">NEW</span>
+        <h3>Cartoon Geo-Politics Explainer</h3>
+        <div class="desc">Animated cartoon characters debate world power — 5 nations, one chessboard, zero trust. The domino effect of global crises visualized.</div>
+        <div class="meta"><span>43 seconds</span><span>7.6 MB</span><span>Cartoon style</span></div>
+      </div>
+    </div>
+
+    <div class="video-card">
+      <video controls preload="metadata"><source src="/full-video.mp4" type="video/mp4"></video>
+      <div class="info">
+        <span class="badge badge-new">DEMO</span>
+        <h3>AI Render Lab — Channel Demo</h3>
+        <div class="desc">The complete demo reel: one prompt, one AI, one rendered video. Shows the full Claude Code + Remotion workflow with intro and outro.</div>
+        <div class="meta"><span>44.5 seconds</span><span>4.9 MB</span><span>Motion graphics</span></div>
+      </div>
+    </div>
+
+    <div class="video-card vertical">
+      <video controls preload="metadata"><source src="/short-01.mp4" type="video/mp4"></video>
+      <div class="info">
+        <span class="badge badge-short">SHORT</span>
+        <h3>Prompt → Video in 60 Seconds</h3>
+        <div class="desc">Vertical format YouTube Short showing the complete AI video pipeline from prompt to rendered MP4.</div>
+        <div class="meta"><span>55 seconds</span><span>Vertical 9:16</span><span>3.8 MB</span></div>
+      </div>
+    </div>
+
+    <div class="video-card">
+      <video controls preload="metadata"><source src="/intro.mp4" type="video/mp4"></video>
+      <div class="info">
+        <h3>Channel Intro</h3>
+        <div class="desc">5-second branded intro with logo reveal and tagline animation.</div>
+        <div class="meta"><span>5 seconds</span><span>392 KB</span></div>
+      </div>
+    </div>
+
+    <div class="video-card">
+      <video controls preload="metadata"><source src="/outro.mp4" type="video/mp4"></video>
+      <div class="info">
+        <h3>Channel Outro</h3>
+        <div class="desc">8-second outro with subscribe CTA, next video card, and social links.</div>
+        <div class="meta"><span>8 seconds</span><span>730 KB</span></div>
+      </div>
+    </div>
+
+    <div class="video-card">
+      <video controls preload="metadata"><source src="/final.mp4" type="video/mp4"></video>
+      <div class="info">
+        <h3>Core Demo (No Intro/Outro)</h3>
+        <div class="desc">The standalone 7-scene motion graphics demo — hook, problem, solution, terminal workflow, benefits, finale.</div>
+        <div class="meta"><span>31.5 seconds</span><span>3.7 MB</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Monetization: Pricing -->
+<section class="pricing" id="pricing">
+  <div class="pricing-title">Monetize Your AI Videos</div>
+  <div class="pricing-sub">Choose a plan to access all content, templates, and source code</div>
+  <div class="pricing-grid">
+
+    <div class="price-card">
+      <div class="price-name">Free</div>
+      <div class="price-amount">$0<span>/mo</span></div>
+      <div class="price-period">Forever free</div>
+      <ul class="price-features">
+        <li>Watch all preview videos</li>
+        <li>3 simulation templates</li>
+        <li>Community access</li>
+        <li>Weekly newsletter</li>
+      </ul>
+      <button class="price-btn price-btn-outline">Get Started</button>
+    </div>
+
+    <div class="price-card popular">
+      <div class="price-name">Creator</div>
+      <div class="price-amount">$19<span>/mo</span></div>
+      <div class="price-period">Billed monthly</div>
+      <ul class="price-features">
+        <li>All free features</li>
+        <li>Full video downloads (MP4)</li>
+        <li>All Remotion source code</li>
+        <li>12 reusable components</li>
+        <li>All simulation templates</li>
+        <li>Priority support</li>
+        <li>Commercial license</li>
+      </ul>
+      <button class="price-btn price-btn-primary">Subscribe Now</button>
+    </div>
+
+    <div class="price-card">
+      <div class="price-name">Enterprise</div>
+      <div class="price-amount">$99<span>/mo</span></div>
+      <div class="price-period">Custom solutions</div>
+      <ul class="price-features">
+        <li>All Creator features</li>
+        <li>Custom video generation</li>
+        <li>White-label templates</li>
+        <li>API access</li>
+        <li>Dedicated support</li>
+        <li>Unlimited renders</li>
+        <li>Team seats (5 included)</li>
+      </ul>
+      <button class="price-btn price-btn-outline">Contact Sales</button>
+    </div>
+
+  </div>
+</section>
+
+<!-- Revenue Streams Banner -->
+<section class="money-banner">
+  <div class="money-inner">
+    <div style="flex:1">
+      <h3>Multiple Revenue Streams Built In</h3>
+      <p>This isn't just a video site — it's a monetization engine. YouTube ad revenue from documentaries, paid subscriptions for source code and templates, consulting for custom AI video generation, and a newsletter with 5 video scripts ready to publish.</p>
+      <div class="money-stats">
+        <div class="stat"><div class="stat-value" style="color:var(--success)">5</div><div class="stat-label">Revenue Streams</div></div>
+        <div class="stat"><div class="stat-value" style="color:var(--gold)">$19</div><div class="stat-label">Creator Plan</div></div>
+        <div class="stat"><div class="stat-value" style="color:var(--secondary)">$99</div><div class="stat-label">Enterprise Plan</div></div>
+      </div>
+    </div>
+    <div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px;min-width:240px">
+        <div style="font-size:13px;color:var(--text3);margin-bottom:12px;letter-spacing:0.05em;font-weight:600">REVENUE STREAMS</div>
+        <div style="font-size:14px;color:var(--text2);line-height:2.2">
+          1. YouTube Ad Revenue<br>
+          2. Subscription Plans<br>
+          3. Template Marketplace<br>
+          4. Custom Video Consulting<br>
+          5. Newsletter Sponsorships
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Channel Assets -->
+<section class="channel-art" id="assets">
+  <div class="section-title">Channel Assets</div>
+  <div class="section-sub">Ready-to-use branding for YouTube, social media, and marketing</div>
+  <div class="art-grid">
+    <div class="art-card">
+      <img src="/channel-banner.png" alt="Channel Banner">
+      <div class="info">
+        <h4>YouTube Channel Banner</h4>
+        <div class="desc">2560×1440 — optimized for all devices</div>
+      </div>
+    </div>
+    <div class="art-card">
+      <img src="/profile-picture.png" alt="Profile Picture" style="max-height:300px;object-fit:contain;background:#0a0a0f">
+      <div class="info">
+        <h4>Profile Picture</h4>
+        <div class="desc">800×800 — AR monogram</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-left">© 2026 AI Render Lab. All videos generated with AI + Remotion.</div>
+  <div class="footer-right">
+    <a href="https://github.com/bksingh9">GitHub</a>
+    <a href="#">Twitter/X</a>
+    <a href="#">YouTube</a>
+    <a href="#">Newsletter</a>
+  </div>
+</footer>
+
+</body>
+</html>
