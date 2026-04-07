@@ -13,6 +13,17 @@ import { CARTOON_TOTAL } from './cartoon/theme';
 import { DOC_TOTAL } from './cartoon/docTimings';
 import { TOTAL_FRAMES } from './utils/timings';
 
+// YouTube Shorts (9:16 vertical)
+import { Short_Petrodollar } from './cartoon/shorts/Short_Petrodollar';
+import { Short_ChipWar } from './cartoon/shorts/Short_ChipWar';
+import { Short_NordStream } from './cartoon/shorts/Short_NordStream';
+import { Short_BRICS } from './cartoon/shorts/Short_BRICS';
+import { Short_Oil } from './cartoon/shorts/Short_Oil';
+import { Short_Surveillance } from './cartoon/shorts/Short_Surveillance';
+import { Short_WarMachine } from './cartoon/shorts/Short_WarMachine';
+
+const SHORT_DURATION = 1710; // 57 seconds (3s hook + 42s facts + 12s CTA)
+
 export const RemotionRoot: React.FC = () => {
   return (
     <>
@@ -85,6 +96,15 @@ export const RemotionRoot: React.FC = () => {
         width={1920}
         height={1080}
       />
+
+      {/* ═══ YouTube Shorts (9:16 vertical, 57s each) ═══ */}
+      <Composition id="Short-Petrodollar" component={Short_Petrodollar} durationInFrames={SHORT_DURATION} fps={30} width={1080} height={1920} />
+      <Composition id="Short-ChipWar" component={Short_ChipWar} durationInFrames={SHORT_DURATION} fps={30} width={1080} height={1920} />
+      <Composition id="Short-NordStream" component={Short_NordStream} durationInFrames={SHORT_DURATION} fps={30} width={1080} height={1920} />
+      <Composition id="Short-BRICS" component={Short_BRICS} durationInFrames={SHORT_DURATION} fps={30} width={1080} height={1920} />
+      <Composition id="Short-Oil" component={Short_Oil} durationInFrames={SHORT_DURATION} fps={30} width={1080} height={1920} />
+      <Composition id="Short-Surveillance" component={Short_Surveillance} durationInFrames={SHORT_DURATION} fps={30} width={1080} height={1920} />
+      <Composition id="Short-WarMachine" component={Short_WarMachine} durationInFrames={SHORT_DURATION} fps={30} width={1080} height={1920} />
 
       {/* Channel art: banner and profile picture */}
       <Still id="ChannelBanner" component={ChannelBanner} width={2560} height={1440} />
