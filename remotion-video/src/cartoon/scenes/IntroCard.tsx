@@ -24,10 +24,10 @@ export const IntroCard: React.FC = () => {
           color: '#fff',
           letterSpacing: '0.1em',
           textTransform: 'uppercase',
-        }}>Geo-Politics Explained</div>
+        }}>Geo-Politics — No Sugar Coating</div>
 
-        <BigCaption text="Who Really" delay={14} color={C.textWhite} fontSize={76} />
-        <BigCaption text="Runs The World?" delay={26} color={C.glow} fontSize={84} gradient={GRADIENT.goldOrange} />
+        <BigCaption text="Who Actually" delay={14} color={C.textWhite} fontSize={76} />
+        <BigCaption text="Runs This Planet?" delay={26} color={C.glow} fontSize={84} gradient={GRADIENT.goldOrange} />
 
         <div style={{ width: lineW, height: 3, background: `linear-gradient(90deg, transparent, ${C.danger}, transparent)`, borderRadius: 2, marginTop: 8 }} />
 
@@ -38,7 +38,7 @@ export const IntroCard: React.FC = () => {
           fontWeight: 400,
           color: C.textLight,
           marginTop: 8,
-        }}>Money, power, and the stories they don't tell you...</div>
+        }}>Hint: It's not who you voted for.</div>
 
         <div style={{
           opacity: fadeIn(frame, 80, 15) * 0.5,
@@ -47,7 +47,7 @@ export const IntroCard: React.FC = () => {
           fontStyle: 'italic',
           color: C.textMuted,
           marginTop: 24,
-        }}>For entertainment & educational purposes only.</div>
+        }}>For entertainment & educational purposes. We're not responsible for your existential crisis.</div>
       </AbsoluteFill>
     </AbsoluteFill>
   );

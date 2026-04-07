@@ -36,13 +36,13 @@ export const DocVideo: React.FC = () => {
 
       <Sequence from={CHAPTERS.ch1_bretton.start} durationInFrames={CHAPTERS.ch1_bretton.duration}>
         <FactSequence
-          title="Birth of Dollar Dominance"
+          title="How One Currency Conquered Earth"
           titleColor={C.charGold}
           facts={[
-            { year: '1944', text: 'Bretton Woods: 44 nations peg currencies to USD', detail: 'Dollar pegged to gold at $35/oz — the new world order', color: C.charGold, icon: '🏛️' },
-            { year: '1971', text: 'Nixon Shock: US abandons gold standard', detail: 'Dollar becomes pure fiat — backed by nothing but trust', color: C.danger, icon: '💥' },
-            { year: '1974', text: 'Kissinger-Saudi deal: oil priced in USD only', detail: 'Saudis get military protection, US gets petrodollar monopoly', color: C.charGold, icon: '🤝' },
-            { year: 'NOW', text: '88% of forex transactions involve the dollar', detail: '40-50% of global trade invoiced in USD. 59% of reserves held in USD', color: C.charBlue, icon: '🌍' },
+            { year: '1944', text: 'Bretton Woods: 44 nations "voluntarily" peg to USD', detail: 'Translation: The guy with all the gold makes the rules. $35/oz.', color: C.charGold, icon: '🏛️' },
+            { year: '1971', text: 'Nixon ditches gold standard — "Trust me bro"', detail: 'Dollar now backed by vibes, aircraft carriers, and audacity', color: C.danger, icon: '💥' },
+            { year: '1974', text: 'Kissinger to Saudi: "Price oil in dollars... or else"', detail: 'The "or else" came with a very large military brochure', color: C.charGold, icon: '🤝' },
+            { year: 'NOW', text: '88% of forex transactions involve the dollar', detail: 'The whole planet uses it. Not because they love it.', color: C.charBlue, icon: '🌍' },
           ]}
         />
       </Sequence>
@@ -51,7 +51,7 @@ export const DocVideo: React.FC = () => {
         <DataBars
           title="Dollar's Global Grip"
           titleColor={C.charGold}
-          subtitle="Why the whole world dances to the dollar's tune"
+          subtitle="Spoiler: It's not because of freedom and democracy"
           bars={[
             { label: 'Forex transactions involving USD', value: 88, maxValue: 100, displayValue: '88%', color: C.charGold, icon: '💱' },
             { label: 'Global oil trade in USD', value: 80, maxValue: 100, displayValue: '~80%', color: C.charOrange, icon: '🛢️' },
@@ -72,31 +72,31 @@ export const DocVideo: React.FC = () => {
             points: ['Military protection', 'Arms sales', 'Political alliance'],
             expression: 'suspicious',
             accessory: 'tie',
-            quote: 'Price oil in dollars... or else.',
+            quote: 'Nice oil you got there. Would be a shame if someone... liberated it.',
           }}
           right={{
             name: 'SAUDI ARABIA',
             color: C.charGreen,
             points: ['Oil priced in USD', 'Buy US Treasury bonds', 'Invest petrodollars in US'],
-            expression: 'neutral',
+            expression: 'smug',
             accessory: 'crown',
-            quote: 'We get security, you get dominance.',
+            quote: 'We get palaces, you get world domination. Deal.',
           }}
-          bottomQuote="This deal made the dollar the world's de facto currency — without a vote."
+          bottomQuote="The most important handshake in history — and you weren't invited."
         />
       </Sequence>
 
       <Sequence from={CHAPTERS.ch1_rebels.start} durationInFrames={CHAPTERS.ch1_rebels.duration}>
         <FactSequence
-          title="Those Who Challenged the Dollar"
+          title="What Happens When You Ditch the Dollar"
           titleColor={C.danger}
           facts={[
-            { year: '2000', text: 'Iraq switches oil sales to euros', detail: 'Saddam Hussein under UN Oil-for-Food program', color: C.charOrange, icon: '🇮🇶' },
-            { year: '2003', text: 'US invades Iraq — oil switched back to dollars', detail: 'Coincidence? $1.9 trillion war cost', color: C.danger, icon: '💣' },
-            { year: '2011', text: 'Libya proposes gold-backed African currency', detail: 'Gaddafi plans gold dinar for oil trade', color: C.charGold, icon: '🇱🇾' },
-            { year: '2011', text: 'NATO intervenes — Gaddafi killed', detail: 'Gold dinar plan dies with him. Another coincidence?', color: C.danger, icon: '⚔️' },
-            { year: '2017', text: 'Venezuela prices oil in yuan', detail: 'Faces severe US sanctions', color: C.charPurple, icon: '🇻🇪' },
-            { year: '2008+', text: 'Iran trades oil in euros', detail: 'Under escalating sanctions since 1979', color: C.mystery, icon: '🇮🇷' },
+            { year: '2000', text: 'Iraq switches oil sales to euros', detail: 'Saddam: "I\'ll use euros." Narrator: This was a mistake.', color: C.charOrange, icon: '🇮🇶' },
+            { year: '2003', text: 'US invades Iraq — oil switched back to dollars', detail: '"WMDs" never found. But the dollar was restored. Coincidence? 🤷', color: C.danger, icon: '💣' },
+            { year: '2011', text: 'Libya proposes gold-backed African currency', detail: 'Gaddafi: "Africa should have its own money!" NATO: "lol no"', color: C.charGold, icon: '🇱🇾' },
+            { year: '2011', text: 'NATO intervenes — Gaddafi killed', detail: 'Gold dinar dies with him. Detecting a pattern yet?', color: C.danger, icon: '⚔️' },
+            { year: '2017', text: 'Venezuela prices oil in yuan', detail: 'Immediately sanctioned into the shadow realm', color: C.charPurple, icon: '🇻🇪' },
+            { year: '2008+', text: 'Iran trades oil in euros', detail: 'Has been on America\'s naughty list since 1979', color: C.mystery, icon: '🇮🇷' },
           ]}
         />
       </Sequence>
@@ -106,20 +106,20 @@ export const DocVideo: React.FC = () => {
       {/* ============================================ */}
 
       <Sequence from={CHAPTERS.ch2_title.start} durationInFrames={CHAPTERS.ch2_title.duration}>
-        <ChapterTitle chapter={2} title="The Chip War" subtitle="US vs China — the battle for technological supremacy" color={C.charBlue} icon="🔬" />
+        <ChapterTitle chapter={2} title="The Chip War" subtitle="Two superpowers fighting over sand. Expensive sand." color={C.charBlue} icon="🔬" />
       </Sequence>
 
       <Sequence from={CHAPTERS.ch2_huawei.start} durationInFrames={CHAPTERS.ch2_huawei.duration}>
         <FactSequence
-          title="The Huawei Takedown"
+          title="Operation: Delete Huawei"
           titleColor={C.charBlue}
           facts={[
-            { year: '2019', text: 'Huawei placed on Entity List — banned from US tech', detail: 'Cited: national security, espionage concerns', color: C.charBlue, icon: '🚫' },
-            { year: '2020', text: 'Total chip cutoff — no US tech anywhere in supply chain', detail: 'Huawei phone sales crash: 240M → 35M units in 2 years', color: C.danger, icon: '📱' },
-            { year: '2022', text: 'CHIPS Act: $52.7 billion to build US chip fabs', detail: '25% tax credit for semiconductor manufacturing', color: C.charGold, icon: '🏭' },
-            { year: '2022', text: 'Sweeping export controls on China', detail: 'Advanced chips, equipment, even US persons restricted', color: C.danger, icon: '🔒' },
-            { year: '2023', text: 'Huawei fights back with 7nm Kirin chip', detail: 'Made by SMIC — shocked analysts who said it was impossible', color: C.charRed, icon: '🔥' },
-            { year: 'NOW', text: 'China controls 60% of rare earth mining, 90% of processing', detail: 'The ultimate leverage in the tech supply chain', color: C.charRed, icon: '⛏️' },
+            { year: '2019', text: 'Huawei banned — "national security concerns"', detail: 'Translation: They were about to beat us at 5G and we panicked', color: C.charBlue, icon: '🚫' },
+            { year: '2020', text: 'Total chip cutoff — scorched earth policy', detail: 'Huawei phone sales: 240M → 35M. Mission accomplished?', color: C.danger, icon: '📱' },
+            { year: '2022', text: 'CHIPS Act: $52.7B of taxpayer money for chip fabs', detail: 'Corporate welfare is fine when you call it "national security"', color: C.charGold, icon: '🏭' },
+            { year: '2022', text: 'Export controls: "No chips for you, China"', detail: 'Even US citizens banned from helping. Land of the free!', color: C.danger, icon: '🔒' },
+            { year: '2023', text: 'Huawei builds 7nm chip anyway', detail: 'Analysts: "Impossible!" Huawei: "Hold my baijiu." 🍶', color: C.charRed, icon: '🔥' },
+            { year: 'NOW', text: 'China owns 60% of rare earths, processes 90%', detail: 'Awkward when you need your rival to make your weapons', color: C.charRed, icon: '⛏️' },
           ]}
         />
       </Sequence>
@@ -134,17 +134,17 @@ export const DocVideo: React.FC = () => {
             points: ['CHIPS Act: $52.7B', 'Export controls', 'TSMC Arizona: $65B', 'TikTok ban'],
             expression: 'angry',
             accessory: 'tie',
-            quote: 'No advanced chips for China.',
+            quote: 'No chips for you! Also please keep making our iPhones.',
           }}
           right={{
             name: 'CHINA',
             color: C.charRed,
-            points: ['Kirin 9000S chip', '60% rare earths', '$279B trade surplus', '150M TikTok US users'],
-            expression: 'suspicious',
+            points: ['Built their own chip anyway', '60% of YOUR rare earths', '$279B trade surplus', '150M Americans addicted to TikTok'],
+            expression: 'smug',
             accessory: 'hat',
-            quote: 'We will be self-sufficient.',
+            quote: 'Self-sufficient? We already own the supply chain.',
           }}
-          bottomQuote="$500+ billion in annual bilateral trade — and growing hostility."
+          bottomQuote="$500B in trade annually. They hate each other but can't break up. It's complicated."
         />
       </Sequence>
 
@@ -152,7 +152,7 @@ export const DocVideo: React.FC = () => {
         <DataBars
           title="The Taiwan Chip Bottleneck"
           titleColor={C.danger}
-          subtitle="TSMC makes 90% of the world's most advanced chips — on one island"
+          subtitle="90% of advanced chips made on one island. What could go wrong?"
           bars={[
             { label: 'TSMC: Advanced chips (sub-7nm)', value: 90, maxValue: 100, displayValue: '90%', color: C.danger, icon: '🇹🇼' },
             { label: 'TSMC 2023 Revenue', value: 69, maxValue: 100, displayValue: '$69B', color: C.charGold, icon: '💰' },
@@ -168,20 +168,20 @@ export const DocVideo: React.FC = () => {
       {/* ============================================ */}
 
       <Sequence from={CHAPTERS.ch3_title.start} durationInFrames={CHAPTERS.ch3_title.duration}>
-        <ChapterTitle chapter={3} title="Energy Chess" subtitle="Russia, Europe, and the weaponization of gas" color={C.charOrange} icon="⛽" />
+        <ChapterTitle chapter={3} title="Energy Chess" subtitle="Europe bet everything on Russian gas. Spoiler: bad idea." color={C.charOrange} icon="⛽" />
       </Sequence>
 
       <Sequence from={CHAPTERS.ch3_nordstream.start} durationInFrames={CHAPTERS.ch3_nordstream.duration}>
         <FactSequence
-          title="The Nord Stream Saga"
+          title="The $18 Billion Underwater Oopsie"
           titleColor={C.charOrange}
           facts={[
-            { year: '2011', text: 'Nord Stream 1 operational: 55 bcm/year capacity', detail: '1,224 km under the Baltic Sea. Cost: $7.4 billion', color: C.charBlue, icon: '🔵' },
-            { year: '2021', text: 'Nord Stream 2 completed but never opened', detail: 'Cost: $11 billion. Germany suspended certification Feb 22, 2022', color: C.charOrange, icon: '🔴' },
-            { year: '2022', text: 'Russia invades Ukraine — energy weapon unleashed', detail: 'Europe scrambles for alternatives', color: C.danger, icon: '💥' },
-            { year: 'SEP 22', text: 'Explosions destroy 3 of 4 Nord Stream pipelines', detail: 'Sabotage confirmed. Whodunit? US? Ukraine? Russia? Still unclear.', color: C.danger, icon: '💣' },
-            { year: 'BEFORE', text: 'EU imported 40-45% of gas from Russia', detail: 'Germany: 55% of gas from Russia', color: C.charPurple, icon: '🇪🇺' },
-            { year: 'AFTER', text: 'Russian pipeline gas to Europe dropped 80%', detail: 'Now ~15% of EU imports. LNG from US, Norway, Qatar fills gap', color: C.charGreen, icon: '📉' },
+            { year: '2011', text: 'Nord Stream 1: 1,224 km pipe under the Baltic Sea', detail: '$7.4 billion to build. Europe\'s addiction to cheap gas: priceless', color: C.charBlue, icon: '🔵' },
+            { year: '2021', text: 'Nord Stream 2 completed but never turned on', detail: '$11 billion paperweight. Germany "suspended" it. Chef\'s kiss.', color: C.charOrange, icon: '🔴' },
+            { year: '2022', text: 'Russia invades Ukraine — turns off the gas tap', detail: '"Nice economy you have there, Europe. Shame if it got cold."', color: C.danger, icon: '💥' },
+            { year: 'SEP 22', text: 'Someone blows up 3 of 4 pipelines', detail: 'Whodunit? US denies it. Russia denies it. Everyone looks suspicious.', color: C.danger, icon: '💣' },
+            { year: 'BEFORE', text: 'EU got 40-45% of gas from Russia', detail: 'Germany: 55%. "Energy dependency? Nah, it\'s a partnership!" 🤡', color: C.charPurple, icon: '🇪🇺' },
+            { year: 'AFTER', text: 'Russian gas to Europe dropped 80%', detail: 'Now buying expensive US LNG. Freedom gas isn\'t free.', color: C.charGreen, icon: '📉' },
           ]}
         />
       </Sequence>
@@ -190,7 +190,7 @@ export const DocVideo: React.FC = () => {
         <DataBars
           title="Sanctions: The Economic War"
           titleColor={C.danger}
-          subtitle="$300 billion in Russian assets frozen by Western nations"
+          subtitle="$300B frozen. Russia: 'That's fine, we didn't need it anyway.'"
           bars={[
             { label: 'Russian reserves frozen', value: 300, maxValue: 400, displayValue: '$300B', color: C.danger, icon: '🧊' },
             { label: 'EU sanction packages', value: 10, maxValue: 15, displayValue: '10+', color: C.charBlue, icon: '📜' },
@@ -211,17 +211,17 @@ export const DocVideo: React.FC = () => {
             points: ['$240B bilateral trade (2023)', '90% settled in yuan/rubles', 'Power of Siberia pipeline'],
             expression: 'suspicious',
             accessory: 'hat',
-            quote: 'The West cut us off. The East opened up.',
+            quote: 'You sanctioned us into a friendship with the world\'s factory.',
           }}
           right={{
             name: 'RUSSIA → INDIA',
             color: C.charGreen,
-            points: ['1.5-2M barrels/day of crude', '$10-30/barrel discounts', 'Russia: India\'s top oil supplier'],
+            points: ['1.5-2M barrels/day of crude', '$10-30/barrel discounts', 'Russia: India\'s #1 oil supplier now'],
             expression: 'happy',
             accessory: 'none',
-            quote: 'Cheap oil? We\'ll take all of it.',
+            quote: 'Sanctions = cheap oil for us. Thanks, West!',
           }}
-          bottomQuote="Sanctions pushed Russia into China and India's arms — was that the plan?"
+          bottomQuote="The West: 'We'll isolate Russia!' Russia: *makes new friends* 'K.'"
         />
       </Sequence>
 
@@ -230,20 +230,20 @@ export const DocVideo: React.FC = () => {
       {/* ============================================ */}
 
       <Sequence from={CHAPTERS.ch4_title.start} durationInFrames={CHAPTERS.ch4_title.duration}>
-        <ChapterTitle chapter={4} title="BRICS Rising" subtitle="The challenge to Western financial dominance" color={C.charGold} icon="🌍" />
+        <ChapterTitle chapter={4} title="BRICS Rising" subtitle="When the rest of the world starts its own group chat" color={C.charGold} icon="🌍" />
       </Sequence>
 
       <Sequence from={CHAPTERS.ch4_expansion.start} durationInFrames={CHAPTERS.ch4_expansion.duration}>
         <FactSequence
-          title="The BRICS Expansion"
+          title="The 'We're Tired of Your Rules' Alliance"
           titleColor={C.charGold}
           facts={[
-            { year: '2006', text: 'BRIC formed: Brazil, Russia, India, China', detail: 'The term coined by Goldman Sachs economist Jim O\'Neill', color: C.charGold, icon: '🤝' },
-            { year: '2010', text: 'South Africa joins → BRICS', detail: 'Now: 40% of world population, 26% of GDP', color: C.charGreen, icon: '🇿🇦' },
-            { year: '2014', text: 'New Development Bank created in Shanghai', detail: '$50B capital, $30B+ in loans approved', color: C.charBlue, icon: '🏦' },
-            { year: '2023', text: '6 new nations invited: Saudi, Iran, UAE, Egypt, Ethiopia', detail: 'Argentina invited but declined under new president Milei', color: C.charOrange, icon: '📢' },
-            { year: '2024', text: '5 new members officially join', detail: 'BRICS+ now represents even more of global GDP and population', color: C.charGold, icon: '🌐' },
-            { year: 'KEY', text: 'Saudi Arabia at the table — petrodollar implications', detail: 'Saudi joined Shanghai Cooperation Organisation as dialogue partner', color: C.danger, icon: '⚠️' },
+            { year: '2006', text: 'BRIC formed — named by a Goldman Sachs guy, ironically', detail: 'Wall Street named the alliance that wants to destroy Wall Street', color: C.charGold, icon: '🤝' },
+            { year: '2010', text: 'South Africa joins → BRICS', detail: '40% of humanity, 26% of GDP. The "global minority" is actually the majority', color: C.charGreen, icon: '🇿🇦' },
+            { year: '2014', text: 'They make their own World Bank. In Shanghai. Flexing.', detail: '$50B capital, $30B+ in loans. No "structural adjustment" required', color: C.charBlue, icon: '🏦' },
+            { year: '2023', text: '6 more nations invited — everyone wants in', detail: 'Argentina said yes then elected a libertarian who said no. Drama.', color: C.charOrange, icon: '📢' },
+            { year: '2024', text: 'BRICS+ now has Saudi, Iran, UAE, Egypt, Ethiopia', detail: 'The cool kids table just got very crowded', color: C.charGold, icon: '🌐' },
+            { year: 'KEY', text: 'Saudi Arabia is hedging its bets', detail: 'Still friends with US. Also friends with China. Playing both sides like a pro.', color: C.danger, icon: '⚠️' },
           ]}
         />
       </Sequence>
@@ -252,7 +252,7 @@ export const DocVideo: React.FC = () => {
         <DataBars
           title="De-Dollarization in Action"
           titleColor={C.danger}
-          subtitle="Central banks buying gold at record rates. Is the dollar losing its grip?"
+          subtitle="Central banks hoarding gold like doomsday preppers. Hmm."
           bars={[
             { label: 'Central bank gold buying 2022', value: 1136, maxValue: 1200, displayValue: '1,136 tonnes', color: C.charGold, icon: '🥇' },
             { label: 'Central bank gold buying 2023', value: 1037, maxValue: 1200, displayValue: '1,037 tonnes', color: C.charGold, icon: '🥇' },
@@ -268,20 +268,20 @@ export const DocVideo: React.FC = () => {
       {/* ============================================ */}
 
       <Sequence from={CHAPTERS.ch5_title.start} durationInFrames={CHAPTERS.ch5_title.duration}>
-        <ChapterTitle chapter={5} title="Middle East Chess" subtitle="Oil, power, and shifting alliances" color={C.charOrange} icon="♟️" />
+        <ChapterTitle chapter={5} title="Middle East Chess" subtitle="Where everyone's playing 4D chess and nobody's winning" color={C.charOrange} icon="♟️" />
       </Sequence>
 
       <Sequence from={CHAPTERS.ch5_opec.start} durationInFrames={CHAPTERS.ch5_opec.duration}>
         <FactSequence
-          title="OPEC+ Moves the Board"
+          title="OPEC+: The Original Price Manipulators"
           titleColor={C.charOrange}
           facts={[
-            { year: 'APR 20', text: 'Oil goes NEGATIVE: -$37.63/barrel', detail: 'COVID collapse + storage shortage = unprecedented', color: C.danger, icon: '📉' },
-            { year: 'JUN 22', text: 'Oil surges to $120/barrel after Ukraine invasion', detail: 'Europe scrambles, prices skyrocket', color: C.charGold, icon: '📈' },
-            { year: 'OCT 22', text: 'OPEC+ cuts 2 million barrels/day', detail: 'Largest cut since 2020 — defying US pressure', color: C.charOrange, icon: '✂️' },
-            { year: '2023', text: 'Saudi adds voluntary 1M bpd cut', detail: 'Extended multiple times to prop up prices', color: C.charGreen, icon: '🇸🇦' },
-            { year: 'KEY', text: 'OPEC+ controls 40% of oil production, 80% of reserves', detail: 'They decide who prospers and who pays', color: C.glow, icon: '⚡' },
-            { year: '2019', text: 'Saudi Aramco IPO: $25.6B — largest IPO ever', detail: 'Briefly world\'s most valuable company at $2.4T', color: C.charGold, icon: '💰' },
+            { year: 'APR 20', text: 'Oil goes NEGATIVE. They literally paid you to take it.', detail: '-$37.63/barrel. Storage full. Traders in tears. Beautiful chaos.', color: C.danger, icon: '📉' },
+            { year: 'JUN 22', text: 'Oil hits $120/barrel — OPEC pops champagne', detail: 'Your gas bill tripled. Their yacht collection doubled.', color: C.charGold, icon: '📈' },
+            { year: 'OCT 22', text: 'OPEC+ cuts 2M barrels/day — middle finger to Biden', detail: 'US: "Please pump more." OPEC: "New phone who dis?"', color: C.charOrange, icon: '✂️' },
+            { year: '2023', text: 'Saudi cuts another 1M bpd just because they can', detail: '"Voluntary" cuts. Voluntarily making you pay more.', color: C.charGreen, icon: '🇸🇦' },
+            { year: 'KEY', text: 'OPEC+ controls 40% production, 80% of reserves', detail: 'A cartel by any other name would smell as profitable', color: C.glow, icon: '⚡' },
+            { year: '2019', text: 'Aramco IPO: $25.6B — casually the biggest ever', detail: '$2.4 TRILLION valuation. Your entire country is worth less.', color: C.charGold, icon: '💰' },
           ]}
         />
       </Sequence>
@@ -296,17 +296,17 @@ export const DocVideo: React.FC = () => {
             points: ['Cut ties with Iran in 2016', 'Abraham Accords with Israel', 'OPEC+ production control'],
             expression: 'neutral',
             accessory: 'crown',
-            quote: 'We\'re diversifying our alliances.',
+            quote: 'Best friends with everyone. Especially whoever has money.',
           }}
           right={{
             name: 'IRAN',
             color: C.charPurple,
-            points: ['Under US sanctions since 1979', 'Oil bourse trades in euros', 'Yemen proxy war vs Saudi'],
+            points: ['Sanctioned since before you were born', 'Oil bourse in euros (bold move)', 'Proxy wars as a hobby'],
             expression: 'angry',
             accessory: 'none',
-            quote: 'The enemy of our enemy...',
+            quote: 'We have been patient for 45 years...',
           }}
-          bottomQuote="March 2023: China brokers Saudi-Iran peace deal in Beijing. A seismic shift."
+          bottomQuote="China brokered their peace deal. In Beijing. While America wasn't looking. Awkward."
         />
       </Sequence>
 
@@ -315,20 +315,20 @@ export const DocVideo: React.FC = () => {
       {/* ============================================ */}
 
       <Sequence from={CHAPTERS.ch6_title.start} durationInFrames={CHAPTERS.ch6_title.duration}>
-        <ChapterTitle chapter={6} title="The Watchers" subtitle="Surveillance, data, and the death of privacy" color={C.mystery} icon="👁️" />
+        <ChapterTitle chapter={6} title="The Watchers" subtitle="Your phone knows more about you than your therapist" color={C.mystery} icon="👁️" />
       </Sequence>
 
       <Sequence from={CHAPTERS.ch6_fiveeyes.start} durationInFrames={CHAPTERS.ch6_fiveeyes.duration}>
         <FactSequence
-          title="Snowden Revealed the Machine"
+          title="That One IT Guy Who Ruined Everything"
           titleColor={C.mystery}
           facts={[
-            { year: '1946', text: 'Five Eyes alliance formed: US, UK, Canada, Australia, NZ', detail: 'UKUSA Agreement — the oldest intelligence-sharing pact', color: C.charBlue, icon: '👁️' },
-            { year: '2013', text: 'Edward Snowden leaks NSA PRISM program', detail: 'Direct access to Google, Facebook, Apple, Microsoft servers', color: C.danger, icon: '💥' },
-            { year: '2013', text: 'XKeyscore: search anyone\'s emails and browsing', detail: 'No prior authorization needed for analysts', color: C.danger, icon: '🔍' },
-            { year: '2013', text: 'Bulk phone metadata collection revealed', detail: 'Every US domestic call recorded under Section 215', color: C.mystery, icon: '📞' },
-            { year: '2022', text: 'Snowden granted Russian citizenship', detail: 'Fled Hong Kong → Russia. Hero or traitor? You decide.', color: C.charPurple, icon: '🇷🇺' },
-            { year: 'NOW', text: 'China: 500-600 million surveillance cameras', detail: '20M+ flights blocked by social credit system', color: C.charRed, icon: '📷' },
+            { year: '1946', text: 'Five Eyes formed: 5 countries who pinky-swore to spy together', detail: 'The OG group chat. Still active. Reading yours right now.', color: C.charBlue, icon: '👁️' },
+            { year: '2013', text: 'Snowden: "Hey, the NSA reads ALL your stuff"', detail: 'PRISM: direct access to Google, Facebook, Apple servers. Surprise!', color: C.danger, icon: '💥' },
+            { year: '2013', text: 'XKeyscore: Google for spies. Search anyone. No warrant.', detail: '"Just trust us" — people who literally built a search engine for your secrets', color: C.danger, icon: '🔍' },
+            { year: '2013', text: 'Every US phone call metadata collected. Every. Single. One.', detail: '"We\'re not listening!" (We\'re just recording who, when, where, how long)', color: C.mystery, icon: '📞' },
+            { year: '2022', text: 'Snowden gets Russian citizenship. Peak irony.', detail: 'Fled surveillance state → moved to surveillance state. Make it make sense.', color: C.charPurple, icon: '🇷🇺' },
+            { year: 'NOW', text: 'China: 600M cameras. One for every 2.4 citizens.', detail: '20M+ flights blocked by social credit. Black Mirror was a documentary.', color: C.charRed, icon: '📷' },
           ]}
         />
       </Sequence>
@@ -337,7 +337,7 @@ export const DocVideo: React.FC = () => {
         <DataBars
           title="Big Tech Knows Everything"
           titleColor={C.mystery}
-          subtitle="They sell your data. Governments buy your silence."
+          subtitle="The product is you. You're not even getting a cut."
           bars={[
             { label: 'Google searches per day', value: 85, maxValue: 100, displayValue: '8.5 billion', color: C.charBlue, icon: '🔍' },
             { label: 'Meta monthly users', value: 75, maxValue: 100, displayValue: '3 billion', color: C.charBlue, icon: '👤' },
@@ -354,14 +354,14 @@ export const DocVideo: React.FC = () => {
       {/* ============================================ */}
 
       <Sequence from={CHAPTERS.ch7_title.start} durationInFrames={CHAPTERS.ch7_title.duration}>
-        <ChapterTitle chapter={7} title="War Machine" subtitle="$886 billion/year — who profits from conflict?" color={C.danger} icon="⚔️" />
+        <ChapterTitle chapter={7} title="War Machine" subtitle="$886B/year. Somebody's making a killing. Literally." color={C.danger} icon="⚔️" />
       </Sequence>
 
       <Sequence from={CHAPTERS.ch7_spending.start} durationInFrames={CHAPTERS.ch7_spending.duration}>
         <DataBars
           title="Follow the Defense Dollars"
           titleColor={C.danger}
-          subtitle="US spends more than the next 10 nations combined — $886B in 2023"
+          subtitle="More than the next 10 countries combined. For 'defense'. Sure."
           bars={[
             { label: 'United States', value: 886, maxValue: 900, displayValue: '$886B', color: C.charBlue, icon: '🇺🇸' },
             { label: 'Lockheed Martin (revenue)', value: 67, maxValue: 900, displayValue: '$67B', color: C.charOrange, icon: '🛩️' },
@@ -375,14 +375,14 @@ export const DocVideo: React.FC = () => {
 
       <Sequence from={CHAPTERS.ch7_cost.start} durationInFrames={CHAPTERS.ch7_cost.duration}>
         <FactSequence
-          title="The True Cost of War"
+          title="The Receipt Nobody Asked For"
           titleColor={C.danger}
           facts={[
-            { year: '2001-21', text: 'Afghanistan War: $2.3 trillion direct cost', detail: 'Including veteran care: $4+ trillion projected', color: C.danger, icon: '🇦🇫' },
-            { year: '2003-11', text: 'Iraq War: $1.9-2 trillion direct cost', detail: 'Long-term: $3+ trillion with veteran care', color: C.danger, icon: '🇮🇶' },
-            { year: 'TOTAL', text: 'Post-9/11 wars: $8+ trillion, 900,000+ deaths', detail: 'Brown University Costs of War Project', color: C.danger, icon: '💀' },
-            { year: 'DOOR', text: '1,700+ senior officials → defense contractors', detail: 'The revolving door between Pentagon and industry', color: C.mystery, icon: '🚪' },
-            { year: 'ARMS', text: 'US is world\'s #1 arms exporter: 40% of global sales', detail: 'Top buyers: Saudi Arabia, Australia, Japan, NATO allies', color: C.charGold, icon: '🔫' },
+            { year: '2001-21', text: 'Afghanistan: $2.3T. Taliban still in charge.', detail: '20 years, $4T+ with vet care. The Taliban waited it out with flip phones.', color: C.danger, icon: '🇦🇫' },
+            { year: '2003-11', text: 'Iraq: $2T for WMDs that never existed', detail: 'Long-term: $3T+. Found zero WMDs. Found lots of oil though.', color: C.danger, icon: '🇮🇶' },
+            { year: 'TOTAL', text: '$8+ TRILLION. 900,000+ dead. What did we get?', detail: 'Brown University did the math. The Pentagon did not want them to.', color: C.danger, icon: '💀' },
+            { year: 'DOOR', text: '1,700 Pentagon officials now work for arms companies', detail: 'Approve the weapons → retire → sell the weapons. Nice gig.', color: C.mystery, icon: '🚪' },
+            { year: 'ARMS', text: '#1 arms dealer on Earth. 40% of global weapons sales.', detail: 'Top customer: Saudi Arabia. What they do with them? Don\'t ask.', color: C.charGold, icon: '🔫' },
           ]}
         />
       </Sequence>

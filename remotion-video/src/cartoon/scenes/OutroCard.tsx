@@ -15,7 +15,7 @@ export const OutroCard: React.FC = () => {
       <CartoonBg color="#060310" accentColor={C.success} particleColor={C.glow} />
       <AbsoluteFill style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 24 }}>
         <BigCaption text="Stay Curious." delay={5} color={C.textWhite} fontSize={68} />
-        <BigCaption text="Stay Skeptical." delay={18} color={C.glow} fontSize={68} gradient={GRADIENT.goldOrange} />
+        <BigCaption text="Trust Nobody." delay={18} color={C.glow} fontSize={68} gradient={GRADIENT.goldOrange} />
 
         <div style={{
           opacity: fadeIn(frame, 40, 12),
@@ -31,7 +31,7 @@ export const OutroCard: React.FC = () => {
           textTransform: 'uppercase',
           boxShadow: `0 4px 24px ${C.danger}66`,
           marginTop: 12,
-        }}>SUBSCRIBE FOR MORE</div>
+        }}>SUBSCRIBE BEFORE THEY TAKE THIS DOWN</div>
 
         <div style={{
           opacity: fadeIn(frame, 55, 12),
@@ -51,7 +51,7 @@ export const OutroCard: React.FC = () => {
         <div style={{
           opacity: fadeIn(frame, 70, 12) * 0.45,
           fontSize: 11, fontFamily: CFONT.body, fontStyle: 'italic', color: C.textMuted, marginTop: 20,
-        }}>For entertainment & educational purposes. Always do your own research.</div>
+        }}>All facts. All sourced. All uncomfortable. Do your own research.</div>
       </AbsoluteFill>
     </AbsoluteFill>
   );
