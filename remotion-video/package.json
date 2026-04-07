@@ -8,8 +8,16 @@
     "render": "npx remotion render src/index.ts MainVideo out/final.mp4"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.1025.0",
     "@remotion/bundler": "^4.0.443",
     "@remotion/cli": "^4.0.443",
+    "@remotion/google-fonts": "^4.0.443",
+    "@remotion/layout-utils": "^4.0.443",
+    "@remotion/motion-blur": "^4.0.443",
+    "@remotion/noise": "^4.0.443",
+    "@remotion/paths": "^4.0.443",
+    "@remotion/shapes": "^4.0.443",
+    "@remotion/transitions": "^4.0.443",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "react": "^19.2.4",
