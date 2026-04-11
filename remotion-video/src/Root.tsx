@@ -22,6 +22,20 @@ import { Short_Oil } from './cartoon/shorts/Short_Oil';
 import { Short_Surveillance } from './cartoon/shorts/Short_Surveillance';
 import { Short_WarMachine } from './cartoon/shorts/Short_WarMachine';
 
+// Geo-Politics Channel Branding
+import { GeoPoliticsBanner } from './cartoon/branding/GeoPoliticsBanner';
+import { GeoPoliticsProfile } from './cartoon/branding/GeoPoliticsProfile';
+import {
+  Thumb_Documentary,
+  Thumb_Petrodollar,
+  Thumb_ChipWar,
+  Thumb_NordStream,
+  Thumb_BRICS,
+  Thumb_Oil,
+  Thumb_Surveillance,
+  Thumb_WarMachine,
+} from './cartoon/branding/Thumbnail';
+
 const SHORT_DURATION = 1710; // 57 seconds (3s hook + 42s facts + 12s CTA)
 
 export const RemotionRoot: React.FC = () => {
@@ -106,9 +120,23 @@ export const RemotionRoot: React.FC = () => {
       <Composition id="Short-Surveillance" component={Short_Surveillance} durationInFrames={SHORT_DURATION} fps={30} width={1080} height={1920} />
       <Composition id="Short-WarMachine" component={Short_WarMachine} durationInFrames={SHORT_DURATION} fps={30} width={1080} height={1920} />
 
-      {/* Channel art: banner and profile picture */}
+      {/* Channel art: banner and profile picture (Dev Tool channel) */}
       <Still id="ChannelBanner" component={ChannelBanner} width={2560} height={1440} />
       <Still id="ProfilePicture" component={ProfilePicture} width={800} height={800} />
+
+      {/* ═══ Geo-Politics Channel Branding ═══ */}
+      <Still id="GeoBanner" component={GeoPoliticsBanner} width={2560} height={1440} />
+      <Still id="GeoProfile" component={GeoPoliticsProfile} width={800} height={800} />
+
+      {/* ═══ YouTube Thumbnails (1280x720) ═══ */}
+      <Still id="Thumb-Documentary" component={Thumb_Documentary} width={1280} height={720} />
+      <Still id="Thumb-Petrodollar" component={Thumb_Petrodollar} width={1280} height={720} />
+      <Still id="Thumb-ChipWar" component={Thumb_ChipWar} width={1280} height={720} />
+      <Still id="Thumb-NordStream" component={Thumb_NordStream} width={1280} height={720} />
+      <Still id="Thumb-BRICS" component={Thumb_BRICS} width={1280} height={720} />
+      <Still id="Thumb-Oil" component={Thumb_Oil} width={1280} height={720} />
+      <Still id="Thumb-Surveillance" component={Thumb_Surveillance} width={1280} height={720} />
+      <Still id="Thumb-WarMachine" component={Thumb_WarMachine} width={1280} height={720} />
     </>
   );
 };
