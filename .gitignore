@@ -10,6 +10,7 @@ media/
 episodes/*/audio/
 episodes/*/render/
 episodes/*/competitor-refs/
+episodes/*/media/
 channel/research-screenshots/
 
 # Python
