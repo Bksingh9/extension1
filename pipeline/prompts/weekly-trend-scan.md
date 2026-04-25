@@ -1,0 +1,28 @@
+# Prompt 3 — Weekly Trend Scan
+
+Run every Monday.
+
+```
+Weekly trend scan for my channel niche. Use Playwright MCP.
+
+1. Pull YouTube trending in my niche category. Capture 20 rising videos
+   from the last 7 days (sort by view-velocity, not absolute views).
+
+2. Pull Google Trends rising queries for my niche topics over 7 and 30 days.
+
+3. Scan Reddit (top niche subs), Hacker News, and X for high-engagement
+   posts in the niche from the last 7 days.
+
+4. Cluster findings into 5–8 emerging themes.
+
+5. For each theme, propose ONE video angle that fits my channel's voice
+   (read channel/niche.md). Score each on:
+   - Demand (search/trend signal, 1–5)
+   - Supply gap (how saturated, 1–5 inverted)
+   - Fit with my channel (1–5)
+   - Animation leverage — does this benefit from animation? (1–5)
+
+6. Save to channel/trend-scan-YYYY-MM-DD.md. Highlight the top 2 ideas.
+
+Don't start production. Just deliver the scan.
+```

@@ -1,0 +1,33 @@
+# Manim outputs
+media/
+*.mp4
+*.mov
+*.gif
+*.wav
+*.mp3
+
+# Per-episode generated content
+episodes/*/audio/
+episodes/*/render/
+episodes/*/competitor-refs/
+channel/research-screenshots/
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+
+# Secrets
+.env
+.env.*
+!.env.example
