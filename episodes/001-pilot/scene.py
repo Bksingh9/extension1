@@ -107,7 +107,8 @@ class Doctrine(Scene):
         for line in lines:
             self.play(FadeIn(line, shift=RIGHT * 0.2, run_time=0.35))
             self.wait(0.4)
-        self.wait(13.0 - (3 * 0.75) - 1.2)
+        # Hold to end of 17s scene window (after ~4.5s of animation above).
+        self.wait(11.5)
         self.play(
             FadeOut(headline),
             FadeOut(lines),
@@ -204,7 +205,8 @@ class Network(Scene):
         cap = source_caption("EU Parliament Res., 22 Nov 1990")
         self.play(FadeIn(cap, run_time=0.4))
 
-        self.wait(2.0)
+        # Hold the full map for the rest of the 20s scene window.
+        self.wait(12.5)
         self.play(
             FadeOut(VGroup(frame, *confirmed_pins, *later_pins, primary_label, cap)),
             run_time=0.5,
