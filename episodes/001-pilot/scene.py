@@ -462,30 +462,32 @@ class Bologna(Scene):
         )
 
         left_h = Text("CONVICTED — Italian Supreme Court",
-                      font=MONO_FONT, color=ACCENT, weight="BOLD").scale(0.36)
+                      font=MONO_FONT, color=ACCENT, weight="BOLD").scale(0.32)
         left_names = VGroup(
-            Text("Valerio Fioravanti  — life, 1995", font=BODY_FONT, color=FG).scale(0.36),
-            Text("Francesca Mambro    — life, 1995", font=BODY_FONT, color=FG).scale(0.36),
-            Text("Luigi Ciavardini    — 30 yrs, 2007", font=BODY_FONT, color=FG).scale(0.36),
-            Text("Gilberto Cavallini  — life, 2023", font=BODY_FONT, color=FG).scale(0.36),
-            Text("Paolo Bellini       — life, 2022", font=BODY_FONT, color=FG).scale(0.36),
+            Text("Valerio Fioravanti  — life, 1995", font=BODY_FONT, color=FG).scale(0.34),
+            Text("Francesca Mambro    — life, 1995", font=BODY_FONT, color=FG).scale(0.34),
+            Text("Luigi Ciavardini    — 30 yrs, 2007", font=BODY_FONT, color=FG).scale(0.34),
+            Text("Gilberto Cavallini  — life, 2023", font=BODY_FONT, color=FG).scale(0.34),
+            Text("Paolo Bellini       — life, 2022", font=BODY_FONT, color=FG).scale(0.34),
         ).arrange(DOWN, aligned_edge=LEFT, buff=0.18)
         left_col = VGroup(left_h, left_names).arrange(DOWN, aligned_edge=LEFT, buff=0.4)
-        left_col.shift(LEFT * 3.8 + DOWN * 0.4)
+        left_col.shift(LEFT * 6.0 + DOWN * 0.4)
+        # Anchor the left column to the left edge of the frame.
+        left_col.to_edge(LEFT, buff=0.6).shift(DOWN * 0.4)
 
         right_h_a = Text("2021 — Court of Appeal:",
-                         font=MONO_FONT, color=ACCENT, weight="BOLD").scale(0.36)
+                         font=MONO_FONT, color=ACCENT, weight="BOLD").scale(0.32)
         right_h_b = Text("“una strage di Stato”",
-                         font=BODY_FONT, color=ACCENT, slant="ITALIC", weight="BOLD").scale(0.42)
+                         font=BODY_FONT, color=ACCENT, slant="ITALIC", weight="BOLD").scale(0.40)
         right_h = VGroup(right_h_a, right_h_b).arrange(DOWN, aligned_edge=LEFT, buff=0.15)
         right_names = VGroup(
-            Text("Licio Gelli         — P2 lodge", font=BODY_FONT, color=FG).scale(0.36),
-            Text("F. U. D'Amato       — NATO / Stay-Behind", font=BODY_FONT, color=FG).scale(0.36),
-            Text("Umberto Ortolani    — P2 lodge", font=BODY_FONT, color=FG).scale(0.36),
-            Text("Mario Tedeschi      — cover-up", font=BODY_FONT, color=FG).scale(0.36),
+            Text("Licio Gelli         — P2 lodge", font=BODY_FONT, color=FG).scale(0.34),
+            Text("F. U. D'Amato       — NATO / Stay-Behind", font=BODY_FONT, color=FG).scale(0.34),
+            Text("Umberto Ortolani    — P2 lodge", font=BODY_FONT, color=FG).scale(0.34),
+            Text("Mario Tedeschi      — cover-up", font=BODY_FONT, color=FG).scale(0.34),
         ).arrange(DOWN, aligned_edge=LEFT, buff=0.18)
         right_col = VGroup(right_h, right_names).arrange(DOWN, aligned_edge=LEFT, buff=0.4)
-        right_col.shift(RIGHT * 0.6 + DOWN * 0.4)
+        right_col.to_edge(RIGHT, buff=0.6).shift(DOWN * 0.4)
 
         cap2 = source_caption("ANSA, 8 Jan 2021")
 
@@ -548,8 +550,8 @@ class Belgium(Scene):
         amber = Text(
             "Belgian parliamentary inquiry: no substantive evidence linking SDRA-VIII to the killings",
             font=BODY_FONT, color=SUPPORTING,
-        ).scale(0.36)
-        amber.move_to([0, -3.4, 0])
+        ).scale(0.32)
+        amber.move_to([0, -3.1, 0])
 
         cap = source_caption("Wikipedia: Brabant killers / Belgian Senate, 1991")
 
