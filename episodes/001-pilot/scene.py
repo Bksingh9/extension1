@@ -70,9 +70,21 @@ from shared.styles import (
     TITLE_FONT,
     VERIFIED,
     classification_stamp,
+    document_card,
+    episode_mark,
     lower_third,
     source_caption,
+    western_europe_outline,
 )
+
+
+EP_NUM = 1
+EP_SLUG = "Gladio"
+
+
+def _mark() -> VGroup:
+    """Shorthand for this episode's persistent brand mark."""
+    return episode_mark(EP_NUM, EP_SLUG)
 
 
 # -- Scene 1 -----------------------------------------------------------------
@@ -81,6 +93,7 @@ class Hook(Scene):
 
     def construct(self) -> None:
         self.camera.background_color = BG
+        self.add(_mark())
 
         title = Text(
             "OPERATION GLADIO",
@@ -114,6 +127,7 @@ class Doctrine(Scene):
 
     def construct(self) -> None:
         self.camera.background_color = BG
+        self.add(_mark())
 
         headline = Text(
             "STAY-BEHIND",
@@ -186,6 +200,7 @@ class Network(Scene):
 
     def construct(self) -> None:
         self.camera.background_color = BG
+        self.add(_mark())
 
         # Frame label so viewers know what they're looking at.
         frame = Text(
@@ -195,6 +210,10 @@ class Network(Scene):
         ).scale(0.35)
         frame.to_edge(UP, buff=0.4)
         self.play(FadeIn(frame, run_time=0.3))
+
+        # Stylised Western Europe outline behind the pins.
+        outline = western_europe_outline()
+        self.play(Create(outline, run_time=0.7))
 
         primary_label = None
         confirmed_pins = []
@@ -208,7 +227,7 @@ class Network(Scene):
 
             if kind == "primary":
                 primary_label = Text(
-                    "622 members · 139 arms caches",
+                    "622 members · 127 arms caches",
                     font=MONO_FONT,
                     color=ACCENT,
                 ).scale(0.32)
@@ -238,7 +257,7 @@ class Network(Scene):
         # Hold the full map for the rest of the 20s scene window.
         self.wait(12.5)
         self.play(
-            FadeOut(VGroup(frame, *confirmed_pins, *later_pins, primary_label, cap)),
+            FadeOut(VGroup(frame, outline, *confirmed_pins, *later_pins, primary_label, cap)),
             run_time=0.5,
         )
 
@@ -249,6 +268,7 @@ class Pivot(Scene):
 
     def construct(self) -> None:
         self.camera.background_color = BG
+        self.add(_mark())
 
         dates = Text(
             "1947  —  1990",
@@ -289,6 +309,7 @@ class Memoir(Scene):
 
     def construct(self) -> None:
         self.camera.background_color = BG
+        self.add(_mark())
 
         # Mock book cover on the left.
         cover = Rectangle(
@@ -327,7 +348,13 @@ class Memoir(Scene):
             self.play(FadeIn(line, shift=RIGHT * 0.15, run_time=0.45))
             self.wait(0.4)
         self.play(FadeIn(cap, run_time=0.4))
-        self.wait(38.0)  # hold to ~45s total
+        # Slow drift on the book + quote group to keep the long hold alive.
+        whole = VGroup(book, quote)
+        self.play(
+            whole.animate(run_time=36.0, rate_func=lambda t: t)
+                 .shift(UP * 0.12)
+                 .scale(1.018),
+        )
         self.play(
             FadeOut(VGroup(book, quote, cap)),
             run_time=0.6,
@@ -340,6 +367,7 @@ class Andreotti(Scene):
 
     def construct(self) -> None:
         self.camera.background_color = BG
+        self.add(_mark())
 
         date_main = Text("24 · X · 1990", font=MONO_FONT, color=ACCENT, weight="BOLD").scale(1.4)
         date_main.shift(UP * 2.6)
@@ -415,7 +443,13 @@ class Andreotti(Scene):
         self.wait(0.4)
         self.play(FadeIn(eu_quote, run_time=0.5))
         self.play(FadeIn(cap2, run_time=0.4))
-        self.wait(46.0)  # hold for the rest of the 60s window
+        # Slow drift on the EU card group to keep the long hold alive.
+        eu_group = VGroup(eu_date, eu_label, oj_ref, eu_quote)
+        self.play(
+            eu_group.animate(run_time=44.0, rate_func=lambda t: t)
+                    .shift(UP * 0.10)
+                    .scale(1.012),
+        )
         self.play(
             FadeOut(VGroup(eu_date, eu_label, oj_ref, eu_quote, cap2)),
             run_time=0.6,
@@ -428,6 +462,7 @@ class Bologna(Scene):
 
     def construct(self) -> None:
         self.camera.background_color = BG
+        self.add(_mark())
 
         date = Text("2 · VIII · 1980", font=MONO_FONT, color=ACCENT, weight="BOLD").scale(1.3)
         date.shift(UP * 2.6)
@@ -512,6 +547,7 @@ class Belgium(Scene):
 
     def construct(self) -> None:
         self.camera.background_color = BG
+        self.add(_mark())
 
         codename = Text("SDRA-VIII", font=MONO_FONT, color=ACCENT, weight="BOLD").scale(1.6)
         codename.shift(UP * 2.4)
@@ -591,6 +627,7 @@ class Disclosed(Scene):
 
     def construct(self) -> None:
         self.camera.background_color = BG
+        self.add(_mark())
 
         header = Text("THE DISCLOSURES", font=MONO_FONT, color=MUTED).scale(0.45)
         header.to_edge(UP, buff=0.5)
@@ -648,6 +685,7 @@ class Filed(Scene):
 
     def construct(self) -> None:
         self.camera.background_color = BG
+        self.add(_mark())
 
         # Centered closing card.
         what_we_dont_know = Text(
