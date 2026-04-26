@@ -208,11 +208,12 @@ class Network(Scene):
             font=MONO_FONT,
             color=MUTED,
         ).scale(0.35)
-        frame.to_edge(UP, buff=0.4)
+        frame.to_edge(UP, buff=0.2)
         self.play(FadeIn(frame, run_time=0.3))
 
         # Stylised Western Europe outline behind the pins.
-        outline = western_europe_outline()
+        # Slightly compressed vertically so the top doesn't kiss the title.
+        outline = western_europe_outline().scale(0.92).shift(DOWN * 0.25)
         self.play(Create(outline, run_time=0.7))
 
         primary_label = None
@@ -465,7 +466,7 @@ class Bologna(Scene):
         self.add(_mark())
 
         date = Text("2 · VIII · 1980", font=MONO_FONT, color=ACCENT, weight="BOLD").scale(1.3)
-        date.shift(UP * 2.6)
+        date.shift(UP * 2.2)
         time_t = Text("10:25 a.m. · Bologna Centrale", font=MONO_FONT, color=MUTED).scale(0.4)
         time_t.next_to(date, DOWN, buff=0.25)
 
