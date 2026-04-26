@@ -444,12 +444,18 @@ class Andreotti(Scene):
         self.wait(0.4)
         self.play(FadeIn(eu_quote, run_time=0.5))
         self.play(FadeIn(cap2, run_time=0.4))
-        # Slow drift on the EU card group to keep the long hold alive.
+        # Slow drift on the EU card to keep the long hold alive.
+        # Split into two halves so per-animation 4K memory stays bounded
+        # (single 44s @ 60fps = 2640 frames OOM'd the renderer).
         eu_group = VGroup(eu_date, eu_label, oj_ref, eu_quote)
         self.play(
-            eu_group.animate(run_time=44.0, rate_func=lambda t: t)
-                    .shift(UP * 0.10)
-                    .scale(1.012),
+            eu_group.animate(run_time=22.0, rate_func=lambda t: t)
+                    .shift(UP * 0.06)
+                    .scale(1.008),
+        )
+        self.play(
+            eu_group.animate(run_time=22.0, rate_func=lambda t: t)
+                    .shift(UP * 0.04),
         )
         self.play(
             FadeOut(VGroup(eu_date, eu_label, oj_ref, eu_quote, cap2)),
