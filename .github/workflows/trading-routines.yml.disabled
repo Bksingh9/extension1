@@ -1,0 +1,75 @@
+# GitHub Actions schedule for the five trading routines.
+#
+# *** This file is disabled on purpose. ***
+# Rename to `trading-routines.yml` ONLY when:
+#   1. You have configured ALPACA_API_KEY/ALPACA_SECRET_KEY as repo secrets,
+#      pointing at a paper-trading account.
+#   2. You have run the offline smoke test locally and it passes.
+#   3. You have decided you want the scheduler to run.
+#
+# Note: GitHub-hosted runners use UTC. Cron values below convert ET → UTC for
+# US Eastern Daylight Time (EDT, UTC-4). Adjust by +1h during EST (UTC-5),
+# Nov–Mar. There is no DST-aware cron in GitHub Actions.
+
+name: trading-routines
+
+on:
+  schedule:
+    - cron: "0 12 * * 1-5"   # 08:00 ET (EDT) — premarket
+    - cron: "35 13 * * 1-5"  # 09:35 ET (EDT) — open execution
+    - cron: "30 16 * * 1-5"  # 12:30 ET (EDT) — midday
+    - cron: "15 20 * * 1-5"  # 16:15 ET (EDT) — eod
+    - cron: "30 20 * * 5"    # 16:30 ET (EDT) Friday — weekly review
+  workflow_dispatch:
+    inputs:
+      routine:
+        description: "Routine number (1-5)"
+        required: true
+        default: "1"
+
+jobs:
+  run-routine:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      TRADING_MODE: paper
+      ALLOW_LIVE: "false"
+      ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
+      ALPACA_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
+      ALPACA_BASE_URL: https://paper-api.alpaca.markets
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      NOTIFICATION_WEBHOOK: ${{ secrets.NOTIFICATION_WEBHOOK }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Pick routine by cron
+        id: pick
+        run: |
+          case "${{ github.event.schedule }}" in
+            "0 12 * * 1-5")  echo "routine=1" >> $GITHUB_OUTPUT ;;
+            "35 13 * * 1-5") echo "routine=2" >> $GITHUB_OUTPUT ;;
+            "30 16 * * 1-5") echo "routine=3" >> $GITHUB_OUTPUT ;;
+            "15 20 * * 1-5") echo "routine=4" >> $GITHUB_OUTPUT ;;
+            "30 20 * * 5")   echo "routine=5" >> $GITHUB_OUTPUT ;;
+            *) echo "routine=${{ github.event.inputs.routine || '1' }}" >> $GITHUB_OUTPUT ;;
+          esac
+      - name: Run routine
+        run: |
+          case "${{ steps.pick.outputs.routine }}" in
+            1) python3 routines/routine_01_premarket.py ;;
+            2) python3 routines/routine_02_open.py ;;
+            3) python3 routines/routine_03_midday.py ;;
+            4) python3 routines/routine_04_eod.py ;;
+            5) python3 routines/routine_05_friday.py ;;
+          esac
+      - name: Commit memory updates
+        run: |
+          git config user.name "trading-bot"
+          git config user.email "trading-bot@users.noreply.github.com"
+          git add memory/ || true
+          git diff --cached --quiet || git commit -m "routine ${{ steps.pick.outputs.routine }} update"
+          git push || true

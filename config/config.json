@@ -1,0 +1,47 @@
+{
+  "watchlist": [
+    "AAPL", "MSFT", "NVDA", "META", "GOOGL", "AMZN", "TSLA",
+    "SPY", "QQQ", "AMD", "SMCI", "PLTR", "CRWD", "COIN", "MSTR",
+    "SOFI", "HOOD", "IONQ", "RKLB", "ARM"
+  ],
+  "risk": {
+    "max_risk_per_trade_pct": 0.01,
+    "max_position_pct": 0.10,
+    "max_open_positions": 10,
+    "max_daily_drawdown_pct": 0.03,
+    "min_atr_stop_pct": 0.005,
+    "min_r_r_ratio": 2.0,
+    "min_price": 5.0,
+    "max_price": 1000.0,
+    "min_avg_volume": 500000,
+    "pdt_account_threshold_usd": 25000.0,
+    "pdt_max_day_trades": 3,
+    "no_trade_minutes_before_close": 5
+  },
+  "sizing": {
+    "kelly_fraction": 0.25,
+    "lookback_trades": 30,
+    "default_win_rate": 0.5,
+    "default_win_loss_ratio": 1.5
+  },
+  "strategy_weights": {
+    "momentum": 1.0,
+    "mean_reversion": 1.0,
+    "breakout": 1.0,
+    "vwap_intraday": 1.0,
+    "news_sentiment": 1.0
+  },
+  "news_sentiment": {
+    "min_score_to_trade": 6,
+    "skip_within_days_of_earnings": 2
+  },
+  "market_hours_et": {
+    "premarket_routine": "08:00",
+    "open_routine": "09:35",
+    "midday_routine": "12:30",
+    "eod_routine": "16:15",
+    "friday_review": "16:30",
+    "regular_open": "09:30",
+    "regular_close": "16:00"
+  }
+}

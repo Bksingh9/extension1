@@ -1,0 +1,10 @@
+alpaca-py>=0.30
+pandas>=2.0
+numpy>=1.26
+apscheduler>=3.10
+pydantic-settings>=2.0
+loguru>=0.7
+yfinance>=0.2
+requests>=2.31
+anthropic>=0.30
+pytest>=7.4
