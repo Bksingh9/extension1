@@ -43,5 +43,30 @@
     "friday_review": "16:30",
     "regular_open": "09:30",
     "regular_close": "16:00"
+  },
+  "regime": {
+    "enabled": true,
+    "primary_symbol": "SPY",
+    "n_components": 5,
+    "covariance_type": "full",
+    "n_iter": 1000,
+    "lookback_days": 504,
+    "min_confidence": 0.60,
+    "labels": {
+      "0": "CRASH",
+      "1": "BEAR",
+      "2": "NEUTRAL",
+      "3": "BULL",
+      "4": "EUPHORIA"
+    },
+    "allocation_pct": {
+      "CRASH": 0.10,
+      "BEAR": 0.40,
+      "NEUTRAL": 0.60,
+      "BULL": 0.95,
+      "EUPHORIA": 0.95
+    },
+    "default_label_on_low_confidence": "NEUTRAL",
+    "model_path": "models/regime.joblib"
   }
 }

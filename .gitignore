@@ -18,3 +18,4 @@ logs/
 *.egg-info/
 dist/
 build/
+models/

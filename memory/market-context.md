@@ -1,6 +1,11 @@
-# Market Context
+# Market Context — 2026-05-04
 
-Refreshed by `routines/routine_01_premarket.py` (08:00 ET).
-Top-5 ranked candidates with thesis. Macro/earnings flags.
+_Generated: 2026-05-04T09:14:19_
+_Regime: **NEUTRAL** (raw=NEUTRAL, conf=0.99, cap=60%)_
+_Universe: 20 symbols, 0 no-data, 0 candidates_
 
-_(no premarket run yet)_
+## Top 5 candidates
+
+| Rank | Symbol | Strategy | Entry | ATR | Score | Notes |
+|------|--------|----------|-------|-----|-------|-------|
+| — | _(no candidates today)_ | | | | | |

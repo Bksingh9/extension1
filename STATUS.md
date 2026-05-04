@@ -10,7 +10,7 @@ _Last updated: 2026-05-04_
 
 | Component | State | Notes |
 |---|---|---|
-| Project scaffold | done | 40 files, branch `claude/trading-playbook-setup-cEwnm` |
+| Project scaffold | done | branch `claude/trading-playbook-setup-cEwnm` |
 | Indicators (RSI/EMA/MACD/BB/ATR/VWAP) | done | Pure-pandas, tested |
 | 5 strategies | done | momentum, mean_reversion, breakout, vwap_intraday, news_sentiment |
 | Risk manager | done | 13 block reasons, all unit-tested |
@@ -20,7 +20,9 @@ _Last updated: 2026-05-04_
 | Audit (SQLite + loguru) | done | `logs/audit.sqlite`, `logs/audit.log` |
 | 5 routines | done | premarket, open, midday, eod, friday |
 | Backtester | done | yfinance bars, walk-forward |
-| Tests | 34 / 34 passing | indicators, strategies, risk, sizer, audit |
+| **HMM regime engine** | **done** | 5 states (CRASH/BEAR/NEUTRAL/BULL/EUPHORIA), aggregate-exposure gate |
+| **Regime training script** | **done** | `scripts/train_regime.py` — fits on yfinance bars |
+| Tests | 49 / 49 passing | + features, allocation, regime |
 | GitHub Actions scheduler | scaffolded, disabled | `.yml.disabled` — opt-in by renaming |
 | Notifications | stub ready | Slack/ClickUp/Discord webhook compatible |
 | News sentiment (Claude) | optional | Falls back to neutral 0 without `ANTHROPIC_API_KEY` |
@@ -28,7 +30,8 @@ _Last updated: 2026-05-04_
 ## What works right now (no keys needed)
 
 ```bash
-pytest -q                                           # 34 passing
+pytest -q                                           # 49 passing
+python3 scripts/train_regime.py --symbol SPY --days 504   # fits HMM, saves model
 python3 scripts/backtest.py --days 1000             # needs yfinance
 TRADING_MODE=dry_run python3 routines/routine_03_midday.py
 TRADING_MODE=dry_run python3 routines/routine_04_eod.py

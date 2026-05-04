@@ -20,10 +20,12 @@ sys.path.insert(0, str(ROOT))
 
 import pandas as pd  # noqa: E402
 
+from src.allocation import decide as decide_allocation  # noqa: E402
 from src.audit import record_event  # noqa: E402
 from src.broker import get_broker  # noqa: E402
 from src.journal import today_str, write_market_context  # noqa: E402
 from src.logging_setup import get_logger  # noqa: E402
+from src.regime import assess_with_default  # noqa: E402
 from src.settings import config, settings  # noqa: E402
 from src.strategies import Signal, best_signal, news_sentiment_signal  # noqa: E402
 
@@ -60,6 +62,30 @@ def _bars(symbol: str, days: int = 200) -> Optional[pd.DataFrame]:
 def main() -> int:
     weights = config["strategy_weights"]
     use_news = bool(settings.anthropic_api_key)
+
+    # Regime assessment on the primary symbol (default SPY).
+    primary = config["regime"]["primary_symbol"]
+    primary_bars = _bars(primary, days=config["regime"]["lookback_days"])
+    regime = assess_with_default(primary_bars) if primary_bars is not None and not primary_bars.empty else None
+    if regime is not None:
+        alloc = decide_allocation(regime.label, regime.confidence)
+        record_event(
+            "regime_assessment",
+            {
+                "label": regime.label,
+                "confidence": regime.confidence,
+                "effective_label": alloc.effective_label,
+                "target_exposure_pct": alloc.target_exposure_pct,
+                "reason": alloc.reason,
+            },
+        )
+        log.info(
+            f"[premarket] regime={regime.label} conf={regime.confidence:.2f} "
+            f"-> effective={alloc.effective_label} cap={alloc.target_exposure_pct*100:.0f}%"
+        )
+    else:
+        alloc = decide_allocation("NEUTRAL", 0.0)
+        log.info("[premarket] no regime data, defaulting to NEUTRAL")
 
     candidates: list[Signal] = []
     skipped = 0
@@ -105,8 +131,14 @@ def main() -> int:
     candidates.sort(key=lambda s: s.score, reverse=True)
     top5 = candidates[:5]
 
+    regime_line = (
+        f"_Regime: **{alloc.effective_label}** (raw={regime.label if regime else 'NEUTRAL'}, "
+        f"conf={(regime.confidence if regime else 0.0):.2f}, "
+        f"cap={alloc.target_exposure_pct*100:.0f}%)_"
+    )
     lines = [
         f"_Generated: {datetime.now().isoformat(timespec='seconds')}_",
+        regime_line,
         f"_Universe: {len(config['watchlist'])} symbols, {skipped} no-data, {len(candidates)} candidates_",
         "",
         "## Top 5 candidates",

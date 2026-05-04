@@ -15,3 +15,7 @@ Latest day on top.
 
 Positions:
   - (none)
+
+## 2026-05-04 — Open execution
+- Regime: **NEUTRAL** (conf 0.99, cap 60%, remaining $60,000)
+- No entries placed.

@@ -41,6 +41,28 @@ definitions below are operator-only edits.
 - Compute W and R from the most recent 30 closed trades in `memory/journal.md`.
 - Cold-start defaults: W = 0.5, R = 1.5.
 
+## Regime layer (HMM, optional gate on aggregate exposure)
+
+A 5-state Gaussian HMM is fit on the primary symbol (default `SPY`) to label
+the current market regime as one of: `CRASH`, `BEAR`, `NEUTRAL`, `BULL`,
+`EUPHORIA`. Each regime maps to a target *aggregate* exposure cap:
+
+| Regime | Aggregate exposure cap |
+|---|---|
+| CRASH | 10% |
+| BEAR | 40% |
+| NEUTRAL | 60% |
+| BULL | 95% |
+| EUPHORIA | 95% |
+
+If posterior confidence for the labeled state is below `0.60`, the layer
+defaults to `NEUTRAL` (60%). Per-trade caps (1% risk, 10% size) and every
+risk-manager block reason still apply on top of this.
+
+To train: `python3 scripts/train_regime.py` (writes `models/regime.joblib`).
+The premarket and open routines load the model if present; if absent they
+default to NEUTRAL.
+
 ## Strategy admission
 
 A new strategy is admitted only when:
