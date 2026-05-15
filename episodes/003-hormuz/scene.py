@@ -15,6 +15,7 @@ from __future__ import annotations
 from manim import (
     DOWN,
     LEFT,
+    ORIGIN,
     RIGHT,
     UP,
     Arrow,
@@ -24,6 +25,7 @@ from manim import (
     FadeIn,
     FadeOut,
     Line,
+    Polygon,
     Rectangle,
     Scene,
     Text,
@@ -46,6 +48,7 @@ from shared.styles import (
     classification_stamp,
     episode_mark,
     lower_third,
+    slow_drift,
     source_caption,
 )
 
@@ -111,7 +114,8 @@ class Hook(Scene):
         self.play(FadeIn(kicker, run_time=0.5))
         self.play(FadeIn(title, shift=DOWN * 0.2, run_time=0.7))
         self.play(FadeIn(stamp, scale=0.6, run_time=0.5))
-        self.wait(7.3)
+        whole = VGroup(kicker, title, stamp)
+        self.play(slow_drift(whole, distance=0.10, run_time=7.0))
         self.play(
             FadeOut(kicker, run_time=0.4),
             FadeOut(title, run_time=0.4),
@@ -178,6 +182,36 @@ class Chokepoint(Scene):
 
         cap = source_caption("IEA · Strait of Hormuz fact sheet")
 
+        # Small tanker silhouette drifting through the strait, left to
+        # right. The hull is a flat trapezoid; the bow is rounded by a
+        # single forward triangle. Scale is deliberately small — the
+        # narrowness is the point, not the ship.
+        def make_tanker(x: float, y: float = 0.0) -> VGroup:
+            hull = Polygon(
+                [x - 0.55, y - 0.06, 0],
+                [x + 0.50, y - 0.06, 0],
+                [x + 0.62, y - 0.02, 0],
+                [x + 0.55, y + 0.07, 0],
+                [x - 0.55, y + 0.07, 0],
+                color=FG,
+                fill_color=FG,
+                fill_opacity=0.85,
+                stroke_width=0,
+            )
+            bridge = Polygon(
+                [x + 0.20, y + 0.07, 0],
+                [x + 0.40, y + 0.07, 0],
+                [x + 0.38, y + 0.16, 0],
+                [x + 0.22, y + 0.16, 0],
+                color=FG,
+                fill_color=FG,
+                fill_opacity=0.85,
+                stroke_width=0,
+            )
+            return VGroup(hull, bridge)
+
+        tanker = make_tanker(-7.0, y=0.05)
+
         self.play(FadeIn(iran_label, run_time=0.4))
         self.play(Create(iran_coast, run_time=0.7))
         self.play(FadeIn(arabia_label, run_time=0.4))
@@ -190,11 +224,25 @@ class Chokepoint(Scene):
         self.wait(0.4)
         self.play(FadeIn(comparison, run_time=0.4))
         self.play(FadeIn(cap, run_time=0.3))
-        self.wait(20.0 - (0.4 + 0.7 + 0.4 + 0.7 + 0.5 + 0.4 + 0.4 + 0.4 + 0.3))
+        self.add(tanker)
+        # Tanker drifts across the full width of the strait during the
+        # 15s hold; the measurement label slow-drifts in parallel.
+        # Split in halves so 4K memory stays bounded (single 14.5s @
+        # 60fps = 870 frames OOM'd the renderer at -qk).
+        gap_group = VGroup(gap_arrow, gap_arrow_back, gap_label, comparison)
+        self.play(
+            tanker.animate(run_time=7.25, rate_func=lambda t: t).shift(RIGHT * 7.0),
+            slow_drift(gap_group, distance=0.03, run_time=7.25),
+        )
+        self.play(
+            tanker.animate(run_time=7.25, rate_func=lambda t: t).shift(RIGHT * 7.0),
+            slow_drift(gap_group, distance=0.03, run_time=7.25),
+        )
         self.play(
             FadeOut(VGroup(
                 iran_label, iran_coast, arabia_label, arabia_coast,
                 gap_arrow, gap_arrow_back, gap_label, comparison, cap,
+                tanker,
             )),
             run_time=0.6,
         )
@@ -268,7 +316,9 @@ class Oil(Scene):
             + 6 * 0.25
             + 0.3 + 0.5 + 0.3
         )
-        self.wait(max(25.0 - held, 0.5))
+        hold_remaining = max(25.0 - held, 0.5)
+        body = VGroup(oil_unit, chips, lng_line)
+        self.play(slow_drift(body, distance=0.05, run_time=hold_remaining))
         self.remove(oil_n)
         self.play(
             FadeOut(VGroup(kicker, oil_unit, chips, lng_line, cap)),
@@ -355,7 +405,12 @@ class Cables(Scene):
             + 0.7 + 0.3
             + 0.5 + 0.3
         )
-        self.wait(max(35.0 - held, 0.5))
+        hold_remaining = max(35.0 - held, 0.5)
+        cable_group = VGroup(
+            cable_aae1, cable_falcon, cable_gbi,
+            aae1_lbl, falcon_lbl, gbi_lbl,
+        )
+        self.play(slow_drift(cable_group, distance=0.04, run_time=hold_remaining))
         self.play(
             FadeOut(VGroup(
                 iran_lbl, arabia_lbl, iran_coast, arabia_coast,
