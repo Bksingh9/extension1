@@ -11,6 +11,7 @@ episodes/*/audio/
 episodes/*/render/
 episodes/*/competitor-refs/
 episodes/*/media/
+episodes/*/broll/
 channel/research-screenshots/
 
 # Python
