@@ -3,18 +3,36 @@
 Open-source AI video models for B-roll. Manim still owns the diagram /
 equation scenes; AI clips supply cinematic cutaways under VO.
 
-## Primary: LTX-Video (wired in)
+## Preferred path (free, highest quality): Veo 3 via Google Vids
+
+- Google's Veo 3 is currently the best video model in production
+  (better than Higgsfield, Kling, Runway Gen-3, LTX-Video).
+- **Free tier: 10 AI clips / month** via Google Vids — enough for one
+  full episode's B-roll with margin.
+- Per-episode runbook lives in `episodes/NNN/veo3-runbook.md`. It
+  contains: (1) browser steps, (2) ready-to-paste prompts mapped to
+  each Manim scene, (3) the 8-second-bypass trick for longer cuts,
+  (4) the drop-in convention for outputs.
+- **Runs in your own browser**, not the dev sandbox. `vids.google.com`,
+  `workspace.google.com`, `gemini.google.com`, `labs.google` are all
+  blocked at this sandbox's network boundary.
+
+See `episodes/003-hormuz/veo3-runbook.md` for the worked example.
+
+## Fallback (self-hosted, paid GPU time): LTX-Video
 
 - Repo: `https://github.com/Lightricks/LTX-Video` — vendored at
   `tools/LTX-Video/` as a submodule.
-- Closest open-source match to **Higgsfield / Kling / Runway Gen-3**
-  in cinematic quality + speed. DiT architecture. Apache 2.0.
+- Closest open-source match to Veo 3 / Kling. DiT architecture.
+  Apache 2.0.
+- Use when: you've blown the Veo 3 free quota, or want full local
+  control without depending on Google.
 - Two model sizes:
   - **`ltxv-13b-0.9.8-distilled`** — 24–32 GB VRAM. Good default.
   - **`ltxv-13b-0.9.8-dev`** — 48 GB+ VRAM. Best quality.
 - All configs in `tools/LTX-Video/configs/`.
 
-## Alternates (not vendored)
+## Other alternates (not vendored)
 
 | Model | Repo | VRAM | When |
 |---|---|---|---|
@@ -26,29 +44,18 @@ equation scenes; AI clips supply cinematic cutaways under VO.
 ## Workflow (wired)
 
 ```
-episodes/NNN/broll-prompts.md      ←  one block per cinematic cutaway
-pipeline/broll.py episodes/NNN/    ←  generates the clips
-episodes/NNN/broll/<scene>.mp4     ←  output, gitignored
+episodes/NNN/veo3-runbook.md       ←  preferred: prompts for browser
+episodes/NNN/broll-prompts.md      ←  fallback: prompts for LTX
+pipeline/broll.py episodes/NNN/    ←  fallback runner (LTX)
+episodes/NNN/broll/<scene>.mp4     ←  output from either path
 episodes/NNN/scene.py              ←  composites clips as VideoMobject
                                        backgrounds at low opacity
 ```
 
-Each `broll-prompts.md` block has the form:
+Veo 3 path: paste prompts in browser, drop MP4s in `broll/`. Manual.
+LTX path: one command on a GPU host. Scripted.
 
-```
-## <SceneName> · <seconds>s · <W>x<H>
-<prompt body>
-```
-
-`SceneName` must match the Manim Scene class so the clip composites
-into the right scene.
-
-## Runbook — running on a GPU host
-
-This codebase **cannot** generate clips from the original development
-sandbox: the network blocks Hugging Face, Replicate, Runway, Pixabay,
-Pexels, Higgsfield, and every other AI-video service. Inference runs
-elsewhere. Three reasonable hosts:
+## Runbook — LTX-Video on a GPU host
 
 ### Option A — your own machine (24 GB+ GPU)
 
@@ -95,21 +102,15 @@ exception, not the rule. Use it only when:
    and more on-brand.
 2. The cutaway sits **behind** the typography at low opacity — the
    citations and source captions still own the foreground.
-3. You have a usage budget — model weight downloads are ~30 GB each
-   and cloud GPU time is metered.
+3. You have a usage budget — Veo 3 free is 10 clips/mo; LTX
+   self-hosted is GPU time.
 
 ## Cost estimate (Hormuz episode, 7 clips)
 
-| Clip | Seconds | Approx. time on H100 | Approx. cost |
+| Path | Total cost | Time | Notes |
 |---|---|---|---|
-| Hook | 5 | 90 s | $0.08 |
-| Chokepoint | 4 | 75 s | $0.07 |
-| Cables | 5 | 90 s | $0.08 |
-| Closure | 6 | 110 s | $0.10 |
-| Pipelines | 4 | 75 s | $0.07 |
-| Successor | 5 | 90 s | $0.08 |
-| Filed | 5 | 90 s | $0.08 |
-| **Total** | **34 s** | **~10 min** | **~$0.56** |
+| **Veo 3 free tier** | $0 | ~10 min hands-on | 7 of 10 monthly credits |
+| LTX-Video on RunPod H100 | ~$0.56 | ~10 min compute | $3.30/hr × ~10 min |
+| LTX-Video on local 24 GB GPU | $0 (electricity) | ~30 min | distilled-13B preset |
+| LTX-Video on Modal | <$5 | <10 min | serverless A100 |
 
-Estimates assume RunPod H100 at ~$3.30/hr and the distilled-13B
-model. Real timings vary ±2× depending on prompt complexity.
