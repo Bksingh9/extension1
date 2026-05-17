@@ -1,0 +1,124 @@
+name: ai-gen
+
+# Free AI video + image generation in the cloud.
+# Runs `tools/ai-gen/gen.py` on a GitHub-hosted Ubuntu runner, which
+# has full internet egress and can reach Hugging Face ZeroGPU Spaces.
+# Outputs are uploaded as workflow artifacts you can download from
+# the Actions tab.
+#
+# Setup (one time):
+#   1. Add a repo secret HF_TOKEN at
+#      Settings → Secrets and variables → Actions → New repository secret
+#      Get the token at https://huggingface.co/settings/tokens (read scope).
+#   2. From the Actions tab, pick "ai-gen" → Run workflow → fill the inputs.
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'single (one prompt) or batch (prompts file path)'
+        type: choice
+        options: [single, batch]
+        default: single
+      prompt:
+        description: 'For single mode: the prompt text. For batch: ignored.'
+        type: string
+        default: 'a paper boat sailing on a calm lake at sunset, soft ripples, golden hour'
+      prompts_file:
+        description: 'For batch mode: path in repo, e.g. tools/ai-gen/prompts/clips.txt'
+        type: string
+        default: 'tools/ai-gen/prompts/clips.txt'
+      kind:
+        description: 'video or image'
+        type: choice
+        options: [video, image]
+        default: video
+      space:
+        description: 'Space id (e.g. evalstate/flux1_schnell) or "auto"'
+        type: string
+        default: 'auto'
+      count:
+        description: 'How many outputs (single mode only)'
+        type: string
+        default: '1'
+
+permissions:
+  contents: read
+
+jobs:
+  generate:
+    name: ${{ inputs.kind }} via ${{ inputs.space }} (${{ inputs.mode }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      HF_TOKEN: ${{ secrets.HF_TOKEN }}
+      AI_GEN_ROOT: ${{ github.workspace }}/ai-gen
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Bootstrap ai-gen project
+        run: |
+          set -e
+          mkdir -p "$AI_GEN_ROOT"/{config,prompts,logs,outputs}
+          cp tools/ai-gen/config/spaces.yaml  "$AI_GEN_ROOT/config/"
+          cp tools/ai-gen/prompts/clips.txt   "$AI_GEN_ROOT/prompts/"
+          python -m pip install --quiet --upgrade pip
+          python -m pip install --quiet \
+            gradio_client huggingface_hub python-slugify rich pyyaml httpx tenacity
+
+      - name: Sanity check — can we reach HF from this runner?
+        run: |
+          set -e
+          curl -s -o /dev/null -w "huggingface.co http=%{http_code}\n"          https://huggingface.co
+          curl -s -o /dev/null -w "evalstate-flux1-schnell.hf.space http=%{http_code}\n" \
+                                                                                  https://evalstate-flux1-schnell.hf.space
+          echo "(403 means blocked; 200/302/301 means we're good)"
+
+      - name: List configured spaces
+        run: python tools/ai-gen/gen.py list-spaces
+
+      - name: Health check
+        run: python tools/ai-gen/gen.py health
+        continue-on-error: true
+
+      - name: Generate (single mode)
+        if: inputs.mode == 'single'
+        run: |
+          python tools/ai-gen/gen.py ${{ inputs.kind }} \
+            --prompt  "${{ inputs.prompt }}" \
+            --space   "${{ inputs.space }}" \
+            --n       "${{ inputs.count }}" \
+            --tag     "gha-${{ github.run_number }}"
+
+      - name: Generate (batch mode)
+        if: inputs.mode == 'batch'
+        run: |
+          python tools/ai-gen/gen.py batch \
+            --file    "${{ inputs.prompts_file }}" \
+            --kind    "${{ inputs.kind }}" \
+            --space   "${{ inputs.space }}" \
+            --tag     "gha-${{ github.run_number }}"
+
+      - name: Show run log
+        if: always()
+        run: |
+          echo "=== runs.csv ==="
+          cat "$AI_GEN_ROOT/logs/runs.csv" 2>/dev/null || echo "(no runs.csv)"
+          echo
+          echo "=== outputs ==="
+          find "$AI_GEN_ROOT/outputs" -type f -printf "%p  %s bytes\n" 2>/dev/null || true
+
+      - name: Upload outputs as artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ai-gen-outputs-run-${{ github.run_number }}
+          path: |
+            ai-gen/outputs/**
+            ai-gen/logs/runs.csv
+          if-no-files-found: warn
+          retention-days: 14

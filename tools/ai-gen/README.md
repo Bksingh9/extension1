@@ -7,12 +7,31 @@ Drives Hugging Face ZeroGPU Spaces (LTX-Video, Wan, Flux) over
 
 **Not from this dev sandbox.** This repo's sandbox firewalls
 `huggingface.co` and `*.hf.space` (verified 403 host_not_allowed
-on every endpoint). Run this on a host with normal egress:
+on every endpoint). Three good places to run it:
 
-- Your own laptop (any OS with Python 3.10/3.11)
-- GitHub Codespaces or Gitpod
-- Oracle Cloud Free Tier VM
-- Any VPS
+### Option A — GitHub Actions (zero-setup automation)
+
+This repo ships a workflow at `.github/workflows/ai-gen.yml`. One-time setup:
+
+1. **Add the HF token as a repo secret.** Repo → Settings → Secrets
+   and variables → Actions → "New repository secret".
+   - Name: `HF_TOKEN`
+   - Value: paste from https://huggingface.co/settings/tokens (read scope)
+2. **Trigger the workflow.** Repo → Actions tab → "ai-gen" → "Run workflow".
+   Fill in:
+   - `mode`: `single` for one prompt, `batch` for a prompts file
+   - `prompt` (single mode) **or** `prompts_file` (batch mode)
+   - `kind`: `video` or `image`
+   - `space`: a specific Space id or `auto`
+
+When the run finishes, **download the artifact** from the run page —
+it contains every generated MP4/PNG plus `runs.csv`.
+
+This is the fastest path to real outputs. No local setup, no GPU,
+no payment. GitHub gives you 2,000 free Actions minutes/month
+which is plenty for the typical workload.
+
+### Option B — your own machine / Codespaces / Gitpod / VPS
 
 ## Setup
 
