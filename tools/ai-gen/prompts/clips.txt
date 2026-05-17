@@ -1,0 +1,13 @@
+# Seed cinematic prompts — one per line, lines starting with # are skipped.
+# Edit freely. Run with:
+#   python gen.py batch --file ~/ai-gen/prompts/clips.txt --kind video --space auto
+a paper boat sailing on a calm lake at sunset, soft ripples, golden hour
+a red panda riding a bicycle through neon Tokyo at dusk, slow tracking shot
+an aerial dawn shot of the Strait of Hormuz, a single tanker drifting through, glassy water
+overhead drone view of an empty oil terminal at night, tankers moored, amber deck lights
+slow forward push over three subsea fibre-optic cables on a silt seabed, cold blue-green
+desert oil pipeline crossing pale dunes at late afternoon, locked-off slow zoom in
+ornate empty parliament hall at night, single overhead chandelier, slow dolly toward an empty podium
+macro of a manila folder closing on a dark wooden desk, partial red stamp, shallow depth of field
+high-altitude time-lapse of clouds parting over a mountain range, cinematic
+abandoned cassette tape on a record-shop shelf, dust motes in beam of sunlight
