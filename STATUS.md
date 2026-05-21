@@ -1,6 +1,6 @@
 # Status
 
-_Last updated: 2026-05-04_
+_Last updated: 2026-05-21_
 
 ## Current mode
 
@@ -20,9 +20,11 @@ _Last updated: 2026-05-04_
 | Audit (SQLite + loguru) | done | `logs/audit.sqlite`, `logs/audit.log` |
 | 5 routines | done | premarket, open, midday, eod, friday |
 | Backtester | done | yfinance bars, walk-forward |
-| **HMM regime engine** | **done** | 5 states (CRASH/BEAR/NEUTRAL/BULL/EUPHORIA), aggregate-exposure gate |
-| **Regime training script** | **done** | `scripts/train_regime.py` — fits on yfinance bars |
-| Tests | 49 / 49 passing | + features, allocation, regime |
+| HMM regime engine | done | 5 states (CRASH/BEAR/NEUTRAL/BULL/EUPHORIA), aggregate-exposure gate |
+| Regime training script | done | `scripts/train_regime.py` — fits on yfinance bars |
+| **Performance metrics (empyrical)** | **done** | Sharpe / Sortino / Calmar / max-DD / CAGR in Friday review and backtester |
+| **HTML tear-sheet (quantstats)** | **done** | Written to `memory/tearsheet-YYYY-MM-DD.html` each Friday |
+| Tests | 55 / 55 passing | + features, allocation, regime, performance |
 | GitHub Actions scheduler | scaffolded, disabled | `.yml.disabled` — opt-in by renaming |
 | Notifications | stub ready | Slack/ClickUp/Discord webhook compatible |
 | News sentiment (Claude) | optional | Falls back to neutral 0 without `ANTHROPIC_API_KEY` |

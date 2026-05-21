@@ -76,15 +76,35 @@ def run(days: int, only_strategy: str | None) -> int:
             # Skip ahead by a few bars to avoid overlap in the same setup.
             i += 5
 
+    try:
+        import empyrical as ep  # noqa
+        have_empyrical = True
+    except ImportError:
+        have_empyrical = False
+
     print(f"\nBacktest results — {total_signals} signals, {days} days, watchlist={len(config['watchlist'])}")
-    print(f"{'strategy':16}{'n':>6}{'win%':>10}{'avg R':>10}{'expectancy':>14}")
+    header = f"{'strategy':16}{'n':>6}{'win%':>9}{'avg R':>9}{'std R':>9}{'sharpe':>9}{'sortino':>10}{'best':>8}{'worst':>8}"
+    print(header)
+    print("-" * len(header))
     for name, rs in sorted(by_strategy.items()):
         if not rs:
             continue
-        wins = sum(1 for r in rs if r > 0)
-        wr = wins / len(rs) * 100
-        ar = mean(rs)
-        print(f"{name:16}{len(rs):>6}{wr:>9.1f}%{ar:>10.2f}{ar:>14.2f}")
+        s = pd.Series(rs)
+        wins = (s > 0).sum()
+        wr = wins / len(s) * 100
+        ar = s.mean()
+        std = s.std()
+        if have_empyrical and len(s) >= 5:
+            import empyrical as ep
+            # Treat each trade R as a daily-like return for Sharpe/Sortino feel.
+            sharpe = ep.sharpe_ratio(s, period="daily")
+            sortino = ep.sortino_ratio(s, period="daily")
+        else:
+            sharpe = sortino = float("nan")
+        print(
+            f"{name:16}{len(s):>6}{wr:>8.1f}%{ar:>9.2f}{std:>9.2f}"
+            f"{sharpe:>9.2f}{sortino:>10.2f}{s.max():>8.2f}{s.min():>8.2f}"
+        )
     return 0
 
 

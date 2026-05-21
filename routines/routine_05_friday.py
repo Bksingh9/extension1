@@ -21,6 +21,13 @@ from src.audit import recent_closed_trades  # noqa: E402
 from src.journal import append_weekly_review, today_str  # noqa: E402
 from src.logging_setup import get_logger  # noqa: E402
 from src.notify import send as notify_send  # noqa: E402
+from src.performance import (  # noqa: E402
+    compute_metrics,
+    equity_curve_from_audit,
+    fetch_spy_returns_aligned,
+    returns_from_equity,
+    write_tearsheet,
+)
 
 log = get_logger()
 
@@ -80,13 +87,50 @@ def main() -> int:
         suggestions.append("- No weight changes suggested this week.")
     lines.extend(suggestions)
 
+    # --- Portfolio-level metrics from the equity curve in audit.sqlite ---
+    equity = equity_curve_from_audit()
+    returns = returns_from_equity(equity)
+    metrics = compute_metrics(returns)
+
+    lines.append("")
+    lines.append("### Portfolio metrics (empyrical)")
+    lines.append("")
+    if metrics["n_days"] is None:
+        lines.append("_Not enough daily equity history yet (need ≥ 5 EOD snapshots)._")
+    else:
+        lines.append(f"| Metric | Value |")
+        lines.append(f"|---|---|")
+        lines.append(f"| Trading days | {metrics['n_days']} |")
+        lines.append(f"| CAGR | {metrics['cagr']*100:.2f}% |")
+        lines.append(f"| Sharpe | {metrics['sharpe']:.2f} |")
+        lines.append(f"| Sortino | {metrics['sortino']:.2f} |")
+        lines.append(f"| Max drawdown | {metrics['max_drawdown']*100:.2f}% |")
+        lines.append(f"| Calmar | {metrics['calmar']:.2f} |")
+        lines.append(f"| Hit rate (days up) | {metrics['hit_rate']*100:.1f}% |")
+        lines.append(f"| Vol (ann.) | {metrics['vol_ann']*100:.2f}% |")
+        lines.append(f"| Best day | {metrics['best_day']*100:.2f}% |")
+        lines.append(f"| Worst day | {metrics['worst_day']*100:.2f}% |")
+
+    # --- quantstats HTML tear-sheet vs SPY ---
+    tearsheet_path = None
+    if metrics["n_days"] is not None:
+        out = ROOT / "memory" / f"tearsheet-{today_str()}.html"
+        spy = fetch_spy_returns_aligned(returns)
+        tearsheet_path = write_tearsheet(
+            returns=returns, out_path=out, benchmark=spy, title="extension1 vs SPY"
+        )
+        if tearsheet_path:
+            lines.append("")
+            lines.append(f"Full tear-sheet: `{tearsheet_path.relative_to(ROOT)}`")
+
     append_weekly_review("\n".join(lines))
     notify_send(
         f"Weekly review: n={overall['n']}, "
         + (f"WR={overall['win_rate']*100:.1f}% " if overall["win_rate"] is not None else "")
         + (f"E={overall['expectancy']:.2f}R" if overall["expectancy"] is not None else "")
+        + (f", Sharpe={metrics['sharpe']:.2f}" if metrics["sharpe"] is not None else "")
     )
-    log.info(f"[friday] weekly review written, n={overall['n']}")
+    log.info(f"[friday] weekly review written, n={overall['n']}, equity_days={metrics['n_days']}")
     return 0
 
 
