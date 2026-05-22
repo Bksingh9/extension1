@@ -46,18 +46,27 @@ def _bars_yf(symbol: str, days: int = 200) -> Optional[pd.DataFrame]:
         return None
 
 
+def _bars_alpha_vantage(symbol: str, days: int = 200) -> Optional[pd.DataFrame]:
+    from src.alpha_vantage_client import get_daily_bars
+    return get_daily_bars(symbol, days=days)
+
+
 def _bars(symbol: str, days: int = 200) -> Optional[pd.DataFrame]:
-    if settings.is_dry:
-        return _bars_yf(symbol, days)
-    try:
-        broker = get_broker()
-        df = broker.get_bars(symbol, days=days, timeframe="1Day")
-        if df is None or df.empty:
-            return _bars_yf(symbol, days)
+    """Three-tier fallback chain: broker (paper/live only) -> yfinance -> Alpha Vantage."""
+    if not settings.is_dry:
+        try:
+            broker = get_broker()
+            df = broker.get_bars(symbol, days=days, timeframe="1Day")
+            if df is not None and not df.empty:
+                return df
+        except Exception as e:
+            log.warning(f"broker bars failed for {symbol}: {e}")
+
+    df = _bars_yf(symbol, days)
+    if df is not None and not df.empty:
         return df
-    except Exception as e:
-        log.warning(f"broker bars failed for {symbol}, falling back to yfinance: {e}")
-        return _bars_yf(symbol, days)
+
+    return _bars_alpha_vantage(symbol, days)
 
 
 def main() -> int:

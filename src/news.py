@@ -118,10 +118,25 @@ def _score_with_claude(symbol: str, headlines: list[str]) -> Optional[float]:
 def assess(symbol: str) -> NewsAssessment:
     headlines = _fetch_headlines(symbol)
     earnings_soon = _has_earnings_soon(symbol)
-    score = _score_with_claude(symbol, headlines) if headlines else None
+    claude_score = _score_with_claude(symbol, headlines) if headlines else None
+
+    # Blend with Stocktwits retail sentiment when available — free, no key.
+    from . import stocktwits_client
+    twits_score = stocktwits_client.sentiment_score(symbol)
+
+    if claude_score is not None and twits_score is not None:
+        # Weighted 60% Claude (news quality) / 40% retail (Stocktwits).
+        blended = 0.6 * claude_score + 0.4 * twits_score
+    elif claude_score is not None:
+        blended = claude_score
+    elif twits_score is not None:
+        blended = twits_score
+    else:
+        blended = 0.0
+
     return NewsAssessment(
         symbol=symbol,
-        sentiment=float(score) if score is not None else 0.0,
+        sentiment=float(blended),
         has_earnings_within_2d=earnings_soon,
         headlines=headlines,
     )
