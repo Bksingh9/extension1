@@ -17,6 +17,10 @@ class Settings(BaseSettings):
     anthropic_api_key: str = ""
     notification_webhook: str = ""
 
+    finnhub_api_key: str = ""
+    fred_api_key: str = ""
+    alpha_vantage_api_key: str = ""
+
     trading_mode: Literal["dry_run", "paper", "live"] = "dry_run"
     allow_live: bool = False
     log_level: str = "INFO"

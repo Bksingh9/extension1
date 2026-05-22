@@ -1,9 +1,13 @@
 """News sentiment scoring.
 
-Cheap, optional, and degrades gracefully:
-- If yfinance is available, fetch recent headlines per symbol.
-- If ANTHROPIC_API_KEY is set, ask Claude for a -10..+10 score.
-- Otherwise, return neutral 0 and skip news-based entries.
+Cheap, optional, and degrades gracefully. Headline + earnings provider
+chain (first hit wins):
+  1. Finnhub (if FINNHUB_API_KEY set) — free 60 req/min, public-apis registry
+  2. yfinance — flaky but no key
+  3. None → neutral 0, skip news-based entry
+
+Sentiment scoring (-10..+10) uses Claude if `ANTHROPIC_API_KEY` is set;
+otherwise returns neutral 0.
 
 We deliberately keep this minimal — sentiment is a *filter* on top of a
 technical confirmation, not a signal source.
@@ -14,6 +18,7 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from typing import Optional
 
+from . import finnhub_client
 from .logging_setup import get_logger
 from .settings import settings
 
@@ -29,6 +34,11 @@ class NewsAssessment:
 
 
 def _fetch_headlines(symbol: str, max_items: int = 10) -> list[str]:
+    # Prefer Finnhub if a key is configured.
+    if settings.finnhub_api_key:
+        hs = finnhub_client.company_news(symbol, days_back=3, max_items=max_items)
+        if hs:
+            return hs
     try:
         import yfinance as yf
         t = yf.Ticker(symbol)
@@ -45,6 +55,11 @@ def _fetch_headlines(symbol: str, max_items: int = 10) -> list[str]:
 
 
 def _has_earnings_soon(symbol: str, days: int = 2) -> bool:
+    if settings.finnhub_api_key:
+        try:
+            return finnhub_client.has_earnings_within(symbol, days=days)
+        except Exception as e:
+            log.debug(f"finnhub earnings check failed for {symbol}: {e}")
     try:
         import yfinance as yf
         t = yf.Ticker(symbol)

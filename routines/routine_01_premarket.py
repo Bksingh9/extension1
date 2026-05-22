@@ -25,6 +25,7 @@ from src.audit import record_event  # noqa: E402
 from src.broker import get_broker  # noqa: E402
 from src.journal import today_str, write_market_context  # noqa: E402
 from src.logging_setup import get_logger  # noqa: E402
+from src.macro import snapshot as macro_snapshot, snapshot_markdown  # noqa: E402
 from src.regime import assess_with_default  # noqa: E402
 from src.settings import config, settings  # noqa: E402
 from src.strategies import Signal, best_signal, news_sentiment_signal  # noqa: E402
@@ -136,10 +137,23 @@ def main() -> int:
         f"conf={(regime.confidence if regime else 0.0):.2f}, "
         f"cap={alloc.target_exposure_pct*100:.0f}%)_"
     )
+
+    # Macro snapshot from FRED (free, public-apis).
+    macro = macro_snapshot()
+    if macro.vix is not None:
+        record_event("macro_snapshot", {
+            "vix": macro.vix, "ten_year_yield": macro.ten_year_yield,
+            "fed_funds": macro.fed_funds, "unemployment": macro.unemployment,
+        })
+
     lines = [
         f"_Generated: {datetime.now().isoformat(timespec='seconds')}_",
         regime_line,
         f"_Universe: {len(config['watchlist'])} symbols, {skipped} no-data, {len(candidates)} candidates_",
+        "",
+        "## Macro (FRED)",
+        "",
+        snapshot_markdown(macro),
         "",
         "## Top 5 candidates",
         "",
