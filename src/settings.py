@@ -21,6 +21,10 @@ class Settings(BaseSettings):
     fred_api_key: str = ""
     alpha_vantage_api_key: str = ""
 
+    # Bigdata.com (RavenPack) — earnings transcripts. SDK: bigdata-client.
+    bigdata_username: str = ""
+    bigdata_password: str = ""
+
     trading_mode: Literal["dry_run", "paper", "live"] = "dry_run"
     allow_live: bool = False
     log_level: str = "INFO"

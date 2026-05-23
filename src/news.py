@@ -115,10 +115,26 @@ def _score_with_claude(symbol: str, headlines: list[str]) -> Optional[float]:
         return None
 
 
+def _transcript_lines(symbol: str) -> list[str]:
+    """Pull the latest earnings-call transcript excerpt (Bigdata.com) as
+    extra context for the Claude scorer. Empty list if unavailable."""
+    if not (settings.bigdata_username and settings.bigdata_password):
+        return []
+    from . import bigdata_client
+    excerpt = bigdata_client.latest_earnings_transcript(symbol)
+    if excerpt is None or not excerpt.text:
+        return []
+    # Cap length so we don't blow up the prompt; first ~2000 chars is enough signal.
+    snippet = excerpt.text[:2000]
+    return [f"[Earnings transcript {excerpt.timestamp}] {snippet}"]
+
+
 def assess(symbol: str) -> NewsAssessment:
     headlines = _fetch_headlines(symbol)
     earnings_soon = _has_earnings_soon(symbol)
-    claude_score = _score_with_claude(symbol, headlines) if headlines else None
+
+    scoring_inputs = list(headlines) + _transcript_lines(symbol)
+    claude_score = _score_with_claude(symbol, scoring_inputs) if scoring_inputs else None
 
     # Blend with Stocktwits retail sentiment when available — free, no key.
     from . import stocktwits_client
