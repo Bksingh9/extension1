@@ -18,6 +18,7 @@ import kelly_size  # noqa: E402
 import predict  # noqa: E402
 import scan  # noqa: E402
 import validate_risk as vr  # noqa: E402
+from connectors.kalshi import normalize_kalshi_market  # noqa: E402
 from validate_risk import OrderProposal, PortfolioState  # noqa: E402
 
 
@@ -201,3 +202,56 @@ def test_risk_blocks_var():
     d = vr.check(_proposal(), _state(var_pct=0.20))
     assert not d.approved
     assert d.reason == "var_exceeds_limit"
+
+
+# ---------- kalshi connector normalization (current API schema) ----------
+
+def _raw_kalshi(**over):
+    base = {
+        "ticker": "KXTEMPNYCH-26MAY2412-T64.99",
+        "title": "Will the temp in NYC be above 64.99 on May 24?",
+        "volume_fp": "350",
+        "volume_24h_fp": "120",
+        "liquidity_dollars": "750.0000",
+        "yes_bid_dollars": "0.4500",
+        "yes_ask_dollars": "0.5000",
+        "close_time": "2099-01-01T00:00:00Z",
+    }
+    base.update(over)
+    return base
+
+
+def test_normalize_parses_string_fields():
+    n = normalize_kalshi_market(_raw_kalshi())
+    assert n["id"].startswith("KXTEMP")
+    assert n["volume"] == 350.0
+    assert n["liquidity_usd"] == 750.0
+    assert n["yes_price"] == pytest.approx(0.475)          # mid of 0.45/0.50
+    assert n["spread_cents"] == pytest.approx(0.05)
+    assert n["volume_7d_avg"] == 120.0
+    assert n["days_to_resolution"] > 30                    # 2099 far out
+
+
+def test_normalize_handles_empty_demo_market():
+    n = normalize_kalshi_market(_raw_kalshi(
+        volume_fp=None, liquidity_dollars="0.0000",
+        yes_bid_dollars="0.0000", yes_ask_dollars="0.0000",
+    ))
+    assert n["volume"] == 0.0
+    assert n["liquidity_usd"] == 0.0
+    assert n["yes_price"] == 0.0
+
+
+def test_normalized_market_passes_scan_when_liquid():
+    # Close within 30 days so it isn't filtered on time-to-resolution.
+    from datetime import datetime, timedelta, timezone
+    soon = (datetime.now(timezone.utc) + timedelta(days=10)).isoformat().replace("+00:00", "Z")
+    n = normalize_kalshi_market(_raw_kalshi(close_time=soon))
+    out = scan.scan([n])
+    assert len(out) == 1
+    assert out[0].id.startswith("KXTEMP")
+
+
+def test_normalized_empty_market_filtered_by_scan():
+    n = normalize_kalshi_market(_raw_kalshi(volume_fp="0", liquidity_dollars="0.0000"))
+    assert scan.scan([n]) == []

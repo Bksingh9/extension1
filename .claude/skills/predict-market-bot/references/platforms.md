@@ -6,13 +6,19 @@
 ## Kalshi (US-regulated)
 - Base (demo): `https://demo-api.kalshi.co/trade-api/v2`
 - Base (prod): `https://api.elections.kalshi.com/trade-api/v2`
+- Toggle: `KALSHI_DEMO=true|false` (default true). Read-only market discovery
+  needs no auth on either base.
 - Market discovery: `GET /markets?status=open&limit=...`
 - Orderbook: `GET /markets/{ticker}/orderbook`
 - Place order: `POST /portfolio/orders` (auth required)
-- Auth: API key id + RSA-PSS request signing. Env:
+- Auth (orders only): API key id + RSA-PSS request signing. Env:
   `KALSHI_API_KEY_ID`, `KALSHI_PRIVATE_KEY`.
-- Demo environment has mock funds — use it for paper trading.
-- Prices are in cents (0–100); connector normalizes to 0–1.
+- Demo environment has mock funds but markets are typically empty
+  (vol/liquidity ≈ 0) — fine for plumbing, useless for real signals.
+- **Current field schema (string-typed):** `volume_fp`, `volume_24h_fp`,
+  `liquidity_dollars`, `yes_bid_dollars`, `yes_ask_dollars`, `close_time`.
+  Prices are already 0–1 USD (NOT cents). `normalize_kalshi_market()` maps
+  these to the scan dict; yes_price is the bid/ask mid.
 
 ## Polymarket (crypto-native, Polygon)
 - CLOB base: `https://clob.polymarket.com`
