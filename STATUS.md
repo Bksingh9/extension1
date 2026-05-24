@@ -33,11 +33,13 @@ _Last updated: 2026-05-21_
 | Stocktwits retail sentiment | done | Bullish/bearish ratio per symbol. No key. Blended 60/40 with Claude news score. |
 | Alpha Vantage bars fallback | done | 3rd-tier bars source (Alpaca → yfinance → AV). Set `ALPHA_VANTAGE_API_KEY`. |
 | **Bigdata.com earnings transcripts** | **done** | Latest earnings-call transcript feeds the Claude sentiment scorer. SDK `bigdata-client`; set `BIGDATA_USERNAME`/`BIGDATA_PASSWORD`. Degrades to no-op without creds. |
+| **Prediction-market skill** | **done** | Claude Code skill `.claude/skills/predict-market-bot/` (Polymarket/Kalshi). Deterministic Kelly + 11-check risk gate + edge/EV/Brier + scan + STOP kill switch + compound ledger. dry_run default. |
 
 ## What works right now (no keys needed)
 
 ```bash
-pytest -q                                           # 80 passing
+pytest -q                                           # 106 passing
+TRADING_MODE=dry_run python3 .claude/skills/predict-market-bot/scripts/pipeline.py  # prediction-market dry run
 python3 scripts/train_regime.py --symbol SPY --days 504   # fits HMM, saves model
 python3 scripts/backtest.py --days 1000             # needs yfinance
 TRADING_MODE=dry_run python3 routines/routine_03_midday.py

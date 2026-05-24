@@ -20,3 +20,5 @@ dist/
 build/
 models/
 memory/tearsheet-*.html
+STOP
+.claude/skills/predict-market-bot/references/trade_ledger.jsonl

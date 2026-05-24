@@ -1,0 +1,35 @@
+{
+  "edge": {
+    "min_edge": 0.04,
+    "min_confidence": 0.60,
+    "max_mispricing_std_floor": 0.02
+  },
+  "sizing": {
+    "kelly_fraction": 0.25,
+    "max_position_pct": 0.05,
+    "max_total_exposure_pct": 0.60
+  },
+  "risk": {
+    "max_concurrent_positions": 15,
+    "max_drawdown_pct": 0.08,
+    "max_daily_loss_pct": 0.15,
+    "var_confidence": 0.95,
+    "max_var_pct": 0.10,
+    "slippage_abort_pct": 0.02,
+    "max_ai_cost_per_day_usd": 50.0
+  },
+  "scan": {
+    "min_volume_contracts": 200,
+    "max_days_to_resolution": 30,
+    "min_liquidity_usd": 500,
+    "anomaly_price_move_pct": 0.10,
+    "anomaly_spread_cents": 0.05,
+    "anomaly_volume_spike_mult": 2.0
+  },
+  "targets": {
+    "win_rate": 0.60,
+    "sharpe": 2.0,
+    "profit_factor": 1.5,
+    "brier_max": 0.25
+  }
+}
