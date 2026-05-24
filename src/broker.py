@@ -28,6 +28,10 @@ GO_LIVE_FILE = ROOT / "memory" / "go-live.md"
 GO_LIVE_PHRASE = "GO LIVE CONFIRMED"
 
 
+class MissingCredentialsError(RuntimeError):
+    """Raised when paper/live mode is selected but Alpaca keys are absent."""
+
+
 @dataclass
 class Account:
     equity: float
@@ -114,14 +118,25 @@ class AlpacaBroker:
     """Thin wrapper over alpaca-py for paper or live."""
 
     def __init__(self) -> None:
-        from alpaca.trading.client import TradingClient
-        from alpaca.data.historical import StockHistoricalDataClient
-
         if settings.is_live and not _live_gate_ok():
             raise RuntimeError(
                 "live mode blocked: ALLOW_LIVE must be true AND memory/go-live.md "
                 "must contain 'GO LIVE CONFIRMED'"
             )
+
+        if not settings.alpaca_api_key or not settings.alpaca_secret_key:
+            raise MissingCredentialsError(
+                f"TRADING_MODE={settings.trading_mode} needs ALPACA_API_KEY and "
+                "ALPACA_SECRET_KEY in .env. Generate a PAPER key at "
+                "https://app.alpaca.markets (toggle 'Paper Trading' first), then set:\n"
+                "  ALPACA_API_KEY=...\n"
+                "  ALPACA_SECRET_KEY=...\n"
+                "  ALPACA_BASE_URL=https://paper-api.alpaca.markets\n"
+                "  TRADING_MODE=paper"
+            )
+
+        from alpaca.trading.client import TradingClient
+        from alpaca.data.historical import StockHistoricalDataClient
 
         paper = not settings.is_live
         self._tc = TradingClient(

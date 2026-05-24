@@ -18,7 +18,7 @@ sys.path.insert(0, str(ROOT))
 
 from src.allocation import decide as decide_allocation, remaining_exposure_budget  # noqa: E402
 from src.audit import record_event, recent_closed_trades  # noqa: E402
-from src.broker import get_broker  # noqa: E402
+from src.broker import MissingCredentialsError, get_broker  # noqa: E402
 from src.journal import append_journal, today_str  # noqa: E402
 from src.logging_setup import get_logger  # noqa: E402
 from src.notify import send as notify_send  # noqa: E402
@@ -52,7 +52,11 @@ def _portfolio_state(broker) -> PortfolioState:
 
 
 def main() -> int:
-    broker = get_broker()
+    try:
+        broker = get_broker()
+    except MissingCredentialsError as e:
+        log.error(f"[open] {e}")
+        return 2
     state = _portfolio_state(broker)
     if state.trading_blocked:
         log.warning("[open] account.trading_blocked → no entries submitted")

@@ -16,7 +16,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 from src.audit import record_event  # noqa: E402
-from src.broker import get_broker  # noqa: E402
+from src.broker import MissingCredentialsError, get_broker  # noqa: E402
 from src.journal import append_journal, today_str, write_positions_table  # noqa: E402
 from src.logging_setup import get_logger  # noqa: E402
 from src.settings import config  # noqa: E402
@@ -25,7 +25,11 @@ log = get_logger()
 
 
 def main() -> int:
-    broker = get_broker()
+    try:
+        broker = get_broker()
+    except MissingCredentialsError as e:
+        log.error(f"[midday] {e}")
+        return 2
     acct = broker.account()
     positions = broker.positions()
 
