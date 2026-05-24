@@ -25,9 +25,13 @@ from validate_risk import OrderProposal, PortfolioState, check  # noqa: E402
 def run(*, bankroll: float = 10_000.0, model_probs: dict[str, float] | None = None) -> int:
     model_probs = model_probs or {}
     markets: list[dict] = []
-    for conn in (KalshiConnector(demo=True), PolymarketConnector()):
+    # demo=None -> respects KALSHI_DEMO env (default demo). Set KALSHI_DEMO=false
+    # to scan real production markets (read-only, no auth).
+    for conn in (KalshiConnector(), PolymarketConnector()):
         try:
-            markets.extend(conn.list_markets(limit=300))
+            got = conn.list_markets(limit=300)
+            markets.extend(got)
+            print(f"[pipeline] {conn.name}: {len(got)} markets")
         except Exception as e:
             print(f"[pipeline] connector {conn.name} failed: {e}")
 
@@ -58,9 +62,9 @@ def run(*, bankroll: float = 10_000.0, model_probs: dict[str, float] | None = No
         if not decision.approved:
             print(f"[pipeline] {sm.id} blocked: {decision.reason}")
             continue
-        # Connector by platform tag is omitted here; dry_run ack only.
+        # dry_run ack only; connector respects KALSHI_DEMO env.
         from connectors.kalshi import KalshiConnector as _K
-        res = execute_order(_K(demo=True), market_id=sm.id, side="yes",
+        res = execute_order(_K(), market_id=sm.id, side="yes",
                             signal_price=sm.yes_price, current_price=sm.yes_price, size=sized.stake_usd)
         if res.placed:
             placed += 1
