@@ -34,12 +34,14 @@ _Last updated: 2026-05-21_
 | Alpha Vantage bars fallback | done | 3rd-tier bars source (Alpaca → yfinance → AV). Set `ALPHA_VANTAGE_API_KEY`. |
 | **Bigdata.com earnings transcripts** | **done** | Latest earnings-call transcript feeds the Claude sentiment scorer. SDK `bigdata-client`; set `BIGDATA_USERNAME`/`BIGDATA_PASSWORD`. Degrades to no-op without creds. |
 | **Prediction-market skill** | **done** | Claude Code skill `.claude/skills/predict-market-bot/` (Polymarket/Kalshi). Deterministic Kelly + 11-check risk gate + edge/EV/Brier + scan + STOP kill switch + compound ledger. dry_run default. |
+| **Indian market (NSE) adapter** | **done** | `src/kite_broker.py` (Zerodha Kite) + `config/india.json` (20 NSE large-caps) + `scripts/india_scan.py`. Reuses strategies/bracket/Kelly. Bars via yfinance `.NS`. Live order = LIMIT+GTT-OCO TODO. Set `MARKET=india`, `KITE_API_KEY`, `KITE_ACCESS_TOKEN`. |
 
 ## What works right now (no keys needed)
 
 ```bash
-pytest -q                                           # 106 passing
+pytest -q                                           # 116 passing
 TRADING_MODE=dry_run python3 .claude/skills/predict-market-bot/scripts/pipeline.py  # prediction-market dry run
+MARKET=india TRADING_MODE=dry_run python3 scripts/india_scan.py    # NSE scan (yfinance .NS bars)
 python3 scripts/train_regime.py --symbol SPY --days 504   # fits HMM, saves model
 python3 scripts/backtest.py --days 1000             # needs yfinance
 TRADING_MODE=dry_run python3 routines/routine_03_midday.py

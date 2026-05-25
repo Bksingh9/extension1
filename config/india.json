@@ -1,0 +1,25 @@
+{
+  "exchange": "NSE",
+  "currency": "INR",
+  "watchlist": [
+    "RELIANCE", "TCS", "HDFCBANK", "INFY", "ICICIBANK",
+    "HINDUNILVR", "SBIN", "BHARTIARTL", "ITC", "KOTAKBANK",
+    "LT", "AXISBANK", "BAJFINANCE", "ASIANPAINT", "MARUTI",
+    "SUNPHARMA", "TITAN", "WIPRO", "ULTRACEMCO", "NESTLEIND"
+  ],
+  "risk": {
+    "max_risk_per_trade_pct": 0.01,
+    "max_position_pct": 0.10,
+    "max_open_positions": 4,
+    "min_price": 50.0,
+    "max_price": 100000.0,
+    "min_avg_volume": 100000
+  },
+  "market_hours_ist": {
+    "open": "09:15",
+    "close": "15:30",
+    "no_trade_minutes_before_close": 5
+  },
+  "product": "CNC",
+  "yfinance_suffix": ".NS"
+}

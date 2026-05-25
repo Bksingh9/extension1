@@ -25,7 +25,12 @@ class Settings(BaseSettings):
     bigdata_username: str = ""
     bigdata_password: str = ""
 
+    # Zerodha Kite Connect (Indian market, NSE/BSE). SDK: kiteconnect.
+    kite_api_key: str = ""
+    kite_access_token: str = ""
+
     trading_mode: Literal["dry_run", "paper", "live"] = "dry_run"
+    market: Literal["us", "india"] = "us"
     allow_live: bool = False
     log_level: str = "INFO"
 
@@ -51,6 +56,11 @@ class Settings(BaseSettings):
 
 def load_config() -> dict:
     with open(ROOT / "config" / "config.json", "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+def load_india_config() -> dict:
+    with open(ROOT / "config" / "india.json", "r", encoding="utf-8") as f:
         return json.load(f)
 
 
