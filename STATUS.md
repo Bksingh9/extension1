@@ -13,7 +13,7 @@ _Last updated: 2026-05-21_
 | Project scaffold | done | branch `claude/trading-playbook-setup-cEwnm` |
 | Indicators (RSI/EMA/MACD/BB/ATR/VWAP) | done | Pure-pandas, tested |
 | 5 strategies | done | momentum, mean_reversion, breakout, vwap_intraday, news_sentiment |
-| Risk manager | done | 13 block reasons, all unit-tested |
+| Risk manager | done | market-aware (US + India); 13 block reasons, all unit-tested |
 | Position sizer (1/4 Kelly) | done | Capped at 10% equity AND 1% per-trade risk |
 | ATR bracket helper | done | stop = max(1.5×ATR, 0.5%×entry), target = 2× stop |
 | Broker wrapper (Alpaca) | done | dry_run / paper / live modes |
@@ -24,7 +24,7 @@ _Last updated: 2026-05-21_
 | Regime training script | done | `scripts/train_regime.py` — fits on yfinance bars |
 | **Performance metrics (empyrical)** | **done** | Sharpe / Sortino / Calmar / max-DD / CAGR in Friday review and backtester |
 | **HTML tear-sheet (quantstats)** | **done** | Written to `memory/tearsheet-YYYY-MM-DD.html` each Friday |
-| Tests | 55 / 55 passing | + features, allocation, regime, performance |
+| Tests | 121 / 121 passing | US + prediction-market + India, all mocked offline |
 | GitHub Actions scheduler | scaffolded, disabled | `.yml.disabled` — opt-in by renaming |
 | Notifications | stub ready | Slack/ClickUp/Discord webhook compatible |
 | News sentiment (Claude) | optional | Falls back to neutral 0 without `ANTHROPIC_API_KEY` |
@@ -39,7 +39,7 @@ _Last updated: 2026-05-21_
 ## What works right now (no keys needed)
 
 ```bash
-pytest -q                                           # 116 passing
+pytest -q                                           # 121 passing
 TRADING_MODE=dry_run python3 .claude/skills/predict-market-bot/scripts/pipeline.py  # prediction-market dry run
 MARKET=india TRADING_MODE=dry_run python3 scripts/india_scan.py    # NSE scan (yfinance .NS bars)
 python3 scripts/train_regime.py --symbol SPY --days 504   # fits HMM, saves model
@@ -74,7 +74,6 @@ TRADING_MODE=dry_run python3 routines/routine_04_eod.py
 - Commit `.env` or any keys.
 - Enable the scheduler — you rename the workflow file.
 - Run during market hours unless you explicitly invoke a routine.
-- Add Indian-market support to this repo (separate effort, different broker).
 
 ## Open questions for you
 

@@ -11,9 +11,13 @@
     "max_risk_per_trade_pct": 0.01,
     "max_position_pct": 0.10,
     "max_open_positions": 4,
+    "max_daily_drawdown_pct": 0.05,
+    "min_atr_stop_pct": 0.005,
+    "min_r_r_ratio": 2.0,
     "min_price": 50.0,
     "max_price": 100000.0,
-    "min_avg_volume": 100000
+    "min_avg_volume": 100000,
+    "no_trade_minutes_before_close": 5
   },
   "market_hours_ist": {
     "open": "09:15",

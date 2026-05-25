@@ -92,3 +92,65 @@ def test_kite_submit_bracket_dry_run(monkeypatch):
     assert ack["status"] == "dry_run"
     # paper mode must NOT call the real place_order
     fake_kite.place_order.assert_not_called()
+
+
+# ---------- market-aware risk gate for India ----------
+
+from datetime import datetime  # noqa: E402
+from zoneinfo import ZoneInfo  # noqa: E402
+
+from src.risk_manager import OrderProposal, PortfolioState, check, compute_bracket  # noqa: E402
+
+IST = ZoneInfo("Asia/Kolkata")
+INDIA_RISK = load_india_config()["risk"]
+
+
+def _india_state(**over):
+    base = dict(
+        equity=1_000_000.0, cash=1_000_000.0, open_positions={}, open_position_count=0,
+        day_pnl_pct=0.0, day_trade_count_5d=0, trading_blocked=False,
+        now_et=datetime(2026, 5, 25, 11, 0, tzinfo=IST),  # 11:00 IST, in window
+    )
+    base.update(over)
+    return PortfolioState(**base)
+
+
+def _india_proposal(entry=2900.0, **over):
+    stop, target = compute_bracket(entry, entry * 0.03, min_stop_pct=INDIA_RISK["min_atr_stop_pct"])
+    base = dict(symbol="RELIANCE", strategy="breakout", side="buy", entry=entry,
+                stop=stop, target=target, qty=3, notional=3 * entry)
+    base.update(over)
+    return OrderProposal(**base)
+
+
+def test_india_accepts_high_priced_stock():
+    # ₹2900 would be rejected by the US gate ($1000 cap); India cap is ₹100000.
+    d = check(_india_proposal(entry=2900.0), _india_state(), risk_cfg=INDIA_RISK, market="india")
+    assert d.approved, d.reason
+
+
+def test_india_blocks_below_min_price():
+    d = check(_india_proposal(entry=20.0), _india_state(), risk_cfg=INDIA_RISK, market="india")
+    assert not d.approved
+    assert d.reason == "price_out_of_range"
+
+
+def test_india_no_pdt_block_on_small_account():
+    # Small account + many day trades: US would PDT-block; India must not.
+    d = check(_india_proposal(entry=2900.0), _india_state(equity=200_000.0, day_trade_count_5d=10),
+              risk_cfg=INDIA_RISK, market="india")
+    assert d.approved, d.reason
+
+
+def test_india_outside_window_blocks():
+    after_close = _india_state(now_et=datetime(2026, 5, 25, 16, 0, tzinfo=IST))
+    d = check(_india_proposal(entry=2900.0), after_close, risk_cfg=INDIA_RISK, market="india")
+    assert not d.approved
+    assert d.reason == "outside_trading_window"
+
+
+def test_india_max_positions_is_four():
+    d = check(_india_proposal(entry=2900.0), _india_state(open_position_count=4),
+              risk_cfg=INDIA_RISK, market="india")
+    assert not d.approved
+    assert d.reason == "max_open_positions_reached"
