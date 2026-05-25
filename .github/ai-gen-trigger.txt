@@ -1,0 +1,8 @@
+# Touch this file (change the number below) and push to fire the
+# ai-gen workflow: batch video over tools/ai-gen/prompts/clips.txt,
+# committing the resulting clips into episodes/003-hormuz/broll/.
+#
+# For reliable results, set the HF_TOKEN repo secret first
+# (Settings → Secrets and variables → Actions). Without it the run
+# uses anonymous ZeroGPU quota and may fail.
+run: 1

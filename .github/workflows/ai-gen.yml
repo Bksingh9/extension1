@@ -3,14 +3,18 @@ name: ai-gen
 # Free AI video + image generation in the cloud.
 # Runs `tools/ai-gen/gen.py` on a GitHub-hosted Ubuntu runner, which
 # has full internet egress and can reach Hugging Face ZeroGPU Spaces.
-# Outputs are uploaded as workflow artifacts you can download from
-# the Actions tab.
 #
-# Setup (one time):
-#   1. Add a repo secret HF_TOKEN at
-#      Settings → Secrets and variables → Actions → New repository secret
-#      Get the token at https://huggingface.co/settings/tokens (read scope).
-#   2. From the Actions tab, pick "ai-gen" → Run workflow → fill the inputs.
+# Two ways to fire it:
+#   A. Actions tab → "ai-gen" → Run workflow (full control via inputs).
+#   B. Push a change to .github/ai-gen-trigger.txt — runs batch video
+#      over tools/ai-gen/prompts/clips.txt with defaults, then commits
+#      the resulting clips back into episodes/003-hormuz/broll/.
+#
+# Setup (one time): add a repo secret HF_TOKEN
+#   Settings → Secrets and variables → Actions → New repository secret
+#   Token: https://huggingface.co/settings/tokens (read scope).
+# Without the secret it runs ANONYMOUSLY against ZeroGPU (tighter
+# quota, may fail) — set the token for reliable results.
 
 on:
   workflow_dispatch:
@@ -19,13 +23,13 @@ on:
         description: 'single (one prompt) or batch (prompts file path)'
         type: choice
         options: [single, batch]
-        default: single
+        default: batch
       prompt:
-        description: 'For single mode: the prompt text. For batch: ignored.'
+        description: 'single mode: the prompt text'
         type: string
-        default: 'a paper boat sailing on a calm lake at sunset, soft ripples, golden hour'
+        default: 'aerial dawn shot of a narrow sea strait, a single tanker drifting through, glassy water, cinematic'
       prompts_file:
-        description: 'For batch mode: path in repo, e.g. tools/ai-gen/prompts/clips.txt'
+        description: 'batch mode: path in repo'
         type: string
         default: 'tools/ai-gen/prompts/clips.txt'
       kind:
@@ -34,25 +38,34 @@ on:
         options: [video, image]
         default: video
       space:
-        description: 'Space id (e.g. evalstate/flux1_schnell) or "auto"'
+        description: 'Space id or "auto"'
         type: string
         default: 'auto'
       count:
-        description: 'How many outputs (single mode only)'
+        description: 'how many (single mode)'
         type: string
         default: '1'
+  push:
+    branches: [claude/setup-youtube-production-GYo4W]
+    paths: ['.github/ai-gen-trigger.txt']
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   generate:
-    name: ${{ inputs.kind }} via ${{ inputs.space }} (${{ inputs.mode }})
     runs-on: ubuntu-latest
     timeout-minutes: 60
     env:
       HF_TOKEN: ${{ secrets.HF_TOKEN }}
       AI_GEN_ROOT: ${{ github.workspace }}/ai-gen
+      # Effective inputs — fall back to defaults on push events.
+      MODE: ${{ inputs.mode || 'batch' }}
+      PROMPT: ${{ inputs.prompt || 'aerial dawn shot of a narrow sea strait, a single tanker drifting through, glassy water, cinematic' }}
+      PROMPTS_FILE: ${{ inputs.prompts_file || 'tools/ai-gen/prompts/clips.txt' }}
+      KIND: ${{ inputs.kind || 'video' }}
+      SPACE: ${{ inputs.space || 'auto' }}
+      COUNT: ${{ inputs.count || '1' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -70,47 +83,55 @@ jobs:
           python -m pip install --quiet \
             gradio_client huggingface_hub python-slugify rich pyyaml httpx tenacity
 
-      - name: Sanity check — can we reach HF from this runner?
+      - name: Sanity check — HF reachable from this runner?
         run: |
-          set -e
-          curl -s -o /dev/null -w "huggingface.co http=%{http_code}\n"          https://huggingface.co
-          curl -s -o /dev/null -w "evalstate-flux1-schnell.hf.space http=%{http_code}\n" \
-                                                                                  https://evalstate-flux1-schnell.hf.space
-          echo "(403 means blocked; 200/302/301 means we're good)"
+          curl -s -o /dev/null -w "huggingface.co http=%{http_code}\n" https://huggingface.co
+          echo "(403 = blocked; 200/302/301 = good)"
+          if [ -z "$HF_TOKEN" ]; then
+            echo "::warning::HF_TOKEN secret not set — running anonymously (limited ZeroGPU quota, may fail)."
+          fi
 
-      - name: List configured spaces
-        run: python tools/ai-gen/gen.py list-spaces
-
-      - name: Health check
-        run: python tools/ai-gen/gen.py health
-        continue-on-error: true
-
-      - name: Generate (single mode)
-        if: inputs.mode == 'single'
+      - name: List spaces + health
         run: |
-          python tools/ai-gen/gen.py ${{ inputs.kind }} \
-            --prompt  "${{ inputs.prompt }}" \
-            --space   "${{ inputs.space }}" \
-            --n       "${{ inputs.count }}" \
-            --tag     "gha-${{ github.run_number }}"
+          python tools/ai-gen/gen.py list-spaces
+          python tools/ai-gen/gen.py health || true
 
-      - name: Generate (batch mode)
-        if: inputs.mode == 'batch'
+      - name: Generate (single)
+        if: env.MODE == 'single'
+        run: |
+          python tools/ai-gen/gen.py "$KIND" \
+            --prompt "$PROMPT" --space "$SPACE" --n "$COUNT" \
+            --tag "gha-${{ github.run_number }}"
+
+      - name: Generate (batch)
+        if: env.MODE == 'batch'
         run: |
           python tools/ai-gen/gen.py batch \
-            --file    "${{ inputs.prompts_file }}" \
-            --kind    "${{ inputs.kind }}" \
-            --space   "${{ inputs.space }}" \
-            --tag     "gha-${{ github.run_number }}"
+            --file "$PROMPTS_FILE" --kind "$KIND" --space "$SPACE" \
+            --tag "gha-${{ github.run_number }}"
 
       - name: Show run log
         if: always()
         run: |
-          echo "=== runs.csv ==="
-          cat "$AI_GEN_ROOT/logs/runs.csv" 2>/dev/null || echo "(no runs.csv)"
-          echo
-          echo "=== outputs ==="
-          find "$AI_GEN_ROOT/outputs" -type f -printf "%p  %s bytes\n" 2>/dev/null || true
+          echo "=== runs.csv ==="; cat "$AI_GEN_ROOT/logs/runs.csv" 2>/dev/null || echo "(none)"
+          echo "=== outputs ==="; find "$AI_GEN_ROOT/outputs" -type f -printf "%p  %s bytes\n" 2>/dev/null || true
+
+      - name: Commit clips back into episodes/003-hormuz/broll/
+        if: always()
+        run: |
+          set -e
+          shopt -s nullglob globstar
+          files=("$AI_GEN_ROOT"/outputs/**/*.mp4 "$AI_GEN_ROOT"/outputs/**/*.png)
+          if [ ${#files[@]} -eq 0 ]; then
+            echo "no outputs to commit"; exit 0
+          fi
+          mkdir -p episodes/003-hormuz/broll
+          cp "${files[@]}" episodes/003-hormuz/broll/ || true
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -f episodes/003-hormuz/broll/
+          git commit -m "ci: generated b-roll clips, run ${{ github.run_number }} [skip ci]" || { echo "nothing to commit"; exit 0; }
+          git push origin HEAD:claude/setup-youtube-production-GYo4W
 
       - name: Upload outputs as artifact
         if: always()
