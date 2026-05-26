@@ -41,6 +41,24 @@ definitions below are operator-only edits.
 - Compute W and R from the most recent 30 closed trades in `memory/journal.md`.
 - Cold-start defaults: W = 0.5, R = 1.5.
 
+### The Kelly-fraction knob (operator, "max growth" within caps)
+
+`config/config.json → sizing.kelly_fraction` (default `0.25`) is the single
+lever for the growth/variance tradeoff. It multiplies the raw Kelly estimate
+before the hard caps apply.
+
+| Setting | Behaviour | Tradeoff |
+|---|---|---|
+| 0.10–0.25 | Conservative (default 0.25 = quarter-Kelly) | Smoother equity curve, slow compounding, low ruin risk |
+| 0.50 | Half-Kelly | ~Higher growth, materially larger drawdowns |
+| 1.00 | Full Kelly | Theoretical max growth rate, but ~50% drawdowns are normal and a bad win-rate estimate can ruin the account |
+| > 1.0 | Over-betting | Negative long-run growth despite a positive edge — do NOT |
+
+Raising this is the ONLY sanctioned way to chase higher growth. The hard caps
+(1% risk/trade, max positions, daily-DD circuit breaker, kill switch) are NOT
+adjustable for that purpose and always bind after the Kelly multiplier. Edit
+the value in config; no code change needed (`src/position_sizer.py` reads it).
+
 ## Regime layer (HMM, optional gate on aggregate exposure)
 
 A 5-state Gaussian HMM is fit on the primary symbol (default `SPY`) to label

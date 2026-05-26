@@ -8,6 +8,7 @@ empyrical-reloaded>=0.5
 quantstats>=0.0.62
 bigdata-client>=2.0
 kiteconnect>=4.2
+ccxt>=4.2
 apscheduler>=3.10
 pydantic-settings>=2.0
 loguru>=0.7

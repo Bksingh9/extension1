@@ -29,6 +29,11 @@ class Settings(BaseSettings):
     kite_api_key: str = ""
     kite_access_token: str = ""
 
+    # Crypto via ccxt (operator picks a legally-usable exchange).
+    ccxt_exchange: str = "binance"
+    ccxt_api_key: str = ""
+    ccxt_secret: str = ""
+
     trading_mode: Literal["dry_run", "paper", "live"] = "dry_run"
     market: Literal["us", "india"] = "us"
     allow_live: bool = False

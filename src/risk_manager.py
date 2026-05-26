@@ -52,8 +52,12 @@ def _cutoff(close_h: int, close_m: int, no_trade_min: int) -> time:
 
 def _trading_window(market: str, rc: dict) -> tuple[time, time]:
     nt = rc.get("no_trade_minutes_before_close", RISK.get("no_trade_minutes_before_close", 5))
+    if market == "crypto":
+        return time(0, 0), time(23, 59, 59)       # 24/7
     if market == "india":
-        return time(9, 15), _cutoff(15, 30, nt)  # NSE 09:15–15:30 IST
+        return time(9, 15), _cutoff(15, 30, nt)   # NSE equities 09:15–15:30 IST
+    if market == "india_fx":
+        return time(9, 0), _cutoff(17, 0, nt)     # NSE currency derivatives 09:00–17:00 IST
     return time(9, 35), _cutoff(16, 0, nt)        # US 09:30–16:00 ET (enter from 09:35)
 
 
