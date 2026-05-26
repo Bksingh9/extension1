@@ -4,6 +4,14 @@
     "SPY", "QQQ", "AMD", "SMCI", "PLTR", "CRWD", "COIN", "MSTR",
     "SOFI", "HOOD", "IONQ", "RKLB", "ARM"
   ],
+  "costs": {
+    "entry_fee_bps": 0.0,
+    "exit_fee_bps": 0.0,
+    "slippage_bps": 5.0,
+    "tds_pct": 0.0,
+    "tax_pct": 0.0,
+    "no_loss_offset": false
+  },
   "risk": {
     "max_risk_per_trade_pct": 0.01,
     "max_position_pct": 0.10,

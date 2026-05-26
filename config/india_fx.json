@@ -1,0 +1,28 @@
+{
+  "market": "india_fx",
+  "currency": "INR",
+  "watchlist": ["USDINR", "EURINR", "GBPINR", "JPYINR"],
+  "costs": {
+    "entry_fee_bps": 2.0,
+    "exit_fee_bps": 2.0,
+    "slippage_bps": 3.0,
+    "tds_pct": 0.0,
+    "tax_pct": 0.0,
+    "no_loss_offset": false
+  },
+  "risk": {
+    "max_risk_per_trade_pct": 0.01,
+    "max_position_pct": 0.10,
+    "max_open_positions": 4,
+    "max_daily_drawdown_pct": 0.05,
+    "min_atr_stop_pct": 0.003,
+    "min_r_r_ratio": 2.0,
+    "min_price": 1.0,
+    "max_price": 1000.0,
+    "min_avg_volume": 0,
+    "no_trade_minutes_before_close": 5
+  },
+  "market_hours_ist": {"open": "09:00", "close": "17:00"},
+  "yfinance_suffix": "=X",
+  "note": "Legal only as NSE/BSE exchange-traded currency derivatives via a SEBI-registered broker (Kite currency F&O). Offshore retail FX violates FEMA."
+}

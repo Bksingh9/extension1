@@ -7,6 +7,14 @@
     "LT", "AXISBANK", "BAJFINANCE", "ASIANPAINT", "MARUTI",
     "SUNPHARMA", "TITAN", "WIPRO", "ULTRACEMCO", "NESTLEIND"
   ],
+  "costs": {
+    "entry_fee_bps": 3.0,
+    "exit_fee_bps": 3.0,
+    "slippage_bps": 5.0,
+    "tds_pct": 0.0,
+    "tax_pct": 0.0,
+    "no_loss_offset": false
+  },
   "risk": {
     "max_risk_per_trade_pct": 0.01,
     "max_position_pct": 0.10,
