@@ -25,7 +25,7 @@ from src.notify import send as notify_send  # noqa: E402
 from src.position_sizer import size_position  # noqa: E402
 from src.regime import assess_with_default  # noqa: E402
 from src.risk_manager import OrderProposal, PortfolioState, check, compute_bracket  # noqa: E402
-from src.settings import config, settings  # noqa: E402
+from src.settings import config  # noqa: E402
 from src.strategies import best_signal  # noqa: E402
 
 from routines.routine_01_premarket import _bars  # noqa: E402
@@ -135,7 +135,7 @@ def main() -> int:
             journal_lines.append(f"- BLOCKED {symbol} ({sig.strategy}): {decision.reason}")
             continue
 
-        order = broker.submit_bracket(
+        broker.submit_bracket(
             symbol=symbol, qty=sizing.qty, entry=sig.entry, stop=stop, target=target, side="buy"
         )
         placed += 1

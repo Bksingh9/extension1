@@ -1,7 +1,3 @@
-import os
-import tempfile
-from pathlib import Path
-from unittest.mock import patch
 
 
 def test_audit_records_event_and_trade(tmp_path, monkeypatch):

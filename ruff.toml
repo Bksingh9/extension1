@@ -1,0 +1,10 @@
+# Lenient-but-useful lint config. Enforces pyflakes correctness errors and
+# unused imports; not pedantic style. Keeps CI green and meaningful.
+line-length = 120
+target-version = "py311"
+
+[lint]
+select = ["E9", "F63", "F7", "F82", "F401", "F811", "F841"]
+
+[lint.per-file-ignores]
+"tests/*" = ["F841"]   # allow unused locals in tests (fixtures, demos)

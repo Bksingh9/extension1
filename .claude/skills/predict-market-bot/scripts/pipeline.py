@@ -13,7 +13,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from common import load_config, trading_mode  # noqa: E402
+from common import trading_mode  # noqa: E402
 from connectors.kalshi import KalshiConnector  # noqa: E402
 from connectors.polymarket import PolymarketConnector  # noqa: E402
 from execute import execute_order  # noqa: E402

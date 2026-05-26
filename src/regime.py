@@ -62,7 +62,6 @@ class RegimeModel:
 
     def transition_matrix(self) -> pd.DataFrame:
         # Reorder rows/cols by sorted-state mapping.
-        n = self.hmm.transmat_.shape[0]
         order = [k for k, _ in sorted(self.state_to_label.items(), key=lambda kv: LABELS.index(kv[1]))]
         labels_ordered = [self.state_to_label[i] for i in order]
         mat = self.hmm.transmat_[np.ix_(order, order)]

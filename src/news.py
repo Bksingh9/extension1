@@ -15,7 +15,7 @@ technical confirmation, not a signal source.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 from typing import Optional
 
 from . import finnhub_client

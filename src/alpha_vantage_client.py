@@ -8,7 +8,6 @@ Returns a pandas.DataFrame with columns: open, high, low, close, volume.
 from __future__ import annotations
 
 import time
-from typing import Optional
 
 from .logging_setup import get_logger
 from .settings import settings

@@ -2,7 +2,6 @@ import numpy as np
 import pandas as pd
 
 from src.strategies import (
-    Signal,
     breakout,
     mean_reversion,
     momentum,

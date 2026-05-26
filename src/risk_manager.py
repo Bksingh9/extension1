@@ -7,8 +7,7 @@ canonical reason string suitable for journaling and audit.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import datetime, time, timezone
-from typing import Iterable
+from datetime import datetime, time
 
 from .audit import record_event
 from .settings import config

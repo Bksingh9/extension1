@@ -14,16 +14,13 @@ from __future__ import annotations
 
 import json
 import sqlite3
-from datetime import datetime
 from pathlib import Path
 from typing import Optional
 
-import numpy as np
 import pandas as pd
 
 from .audit import DB_PATH
 from .logging_setup import get_logger
-from .settings import ROOT
 
 log = get_logger()
 
